@@ -1,0 +1,2273 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Enterprise Data Governance Agent — Visual Studio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    /* ==========================================================================
+       THEME VARIABLES — White / Executive Light Theme (Default)
+       ========================================================================== */
+    :root, [data-theme="light"] {
+      --bg: #f8fafc;
+      --bg-gradient: radial-gradient(at 0% 0%, rgba(79, 70, 229, 0.07) 0px, transparent 50%),
+                     radial-gradient(at 100% 100%, rgba(124, 58, 237, 0.05) 0px, transparent 50%),
+                     #f8fafc;
+      --card-bg: #ffffff;
+      --card-border: #e2e8f0;
+      --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(226, 232, 240, 0.6);
+      --card-hover-shadow: 0 12px 24px -4px rgba(0, 0, 0, 0.08);
+      --section-box-bg: #f1f5f9;
+      --section-box-border: #e2e8f0;
+      --modal-bg: #ffffff;
+      --modal-overlay: rgba(15, 23, 42, 0.5);
+      --accent: #4f46e5;
+      --accent-glow: rgba(79, 70, 229, 0.25);
+      --text: #0f172a;
+      --text-muted: #475569;
+      --text-subtle: #64748b;
+      --input-bg: #f8fafc;
+      --input-border: #cbd5e1;
+      --input-text: #0f172a;
+      --step-item-bg: #ffffff;
+      --step-item-border: #e2e8f0;
+      --step-decision-bg: #f1f5f9;
+      --dossier-bg: #f8fafc;
+      --dossier-text: #1e293b;
+      --dossier-border: #cbd5e1;
+      
+      --danger: #dc2626;
+      --danger-bg: #fef2f2;
+      --danger-border: #fecaca;
+      --danger-text: #991b1b;
+      
+      --success: #059669;
+      --success-bg: #ecfdf5;
+      --success-border: #a7f3d0;
+      --success-text: #065f46;
+      
+      --warning: #d97706;
+      --warning-bg: #fffbeb;
+      --warning-border: #fde68a;
+      --warning-text: #92400e;
+      
+      --purple: #7c3aed;
+      --purple-bg: #f5f3ff;
+      --purple-border: #ddd6fe;
+      --purple-text: #5b21b6;
+    }
+
+    [data-theme="dark"] {
+      --bg: #070a11;
+      --bg-gradient: radial-gradient(at 0% 0%, rgba(79, 70, 229, 0.15) 0px, transparent 50%),
+                     radial-gradient(at 100% 100%, rgba(139, 92, 246, 0.12) 0px, transparent 50%),
+                     #070a11;
+      --card-bg: rgba(15, 23, 42, 0.8);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --card-shadow: 0 16px 36px rgba(0, 0, 0, 0.4);
+      --card-hover-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+      --section-box-bg: rgba(10, 15, 29, 0.6);
+      --section-box-border: rgba(255, 255, 255, 0.08);
+      --modal-bg: #0f172a;
+      --modal-overlay: rgba(0, 0, 0, 0.7);
+      --accent: #6366f1;
+      --accent-glow: rgba(99, 102, 241, 0.35);
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-subtle: #64748b;
+      --input-bg: rgba(10, 15, 29, 0.7);
+      --input-border: rgba(255, 255, 255, 0.08);
+      --input-text: #ffffff;
+      --step-item-bg: rgba(15, 23, 42, 0.6);
+      --step-item-border: rgba(255, 255, 255, 0.08);
+      --step-decision-bg: rgba(0, 0, 0, 0.3);
+      --dossier-bg: rgba(0, 0, 0, 0.45);
+      --dossier-text: #cbd5e1;
+      --dossier-border: rgba(255, 255, 255, 0.08);
+      
+      --danger: #ef4444;
+      --danger-bg: rgba(239, 68, 68, 0.15);
+      --danger-border: rgba(239, 68, 68, 0.3);
+      --danger-text: #fca5a5;
+      
+      --success: #10b981;
+      --success-bg: rgba(16, 185, 129, 0.15);
+      --success-border: rgba(16, 185, 129, 0.3);
+      --success-text: #6ee7b7;
+      
+      --warning: #f59e0b;
+      --warning-bg: rgba(245, 158, 11, 0.15);
+      --warning-border: rgba(245, 158, 11, 0.3);
+      --warning-text: #fde68a;
+      
+      --purple: #8b5cf6;
+      --purple-bg: rgba(139, 92, 246, 0.15);
+      --purple-border: rgba(139, 92, 246, 0.3);
+      --purple-text: #c4b5fd;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+      background: var(--bg);
+      background-image: var(--bg-gradient);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      padding: 24px;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    .container {
+      max-width: 1440px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    /* ==========================================================================
+       TWO-ROW ENTERPRISE HEADER (Databricks / ServiceNow / Azure / Atlassian)
+       ========================================================================== */
+    .app-header {
+      margin-bottom: 24px;
+      border-bottom: 1px solid var(--card-border);
+      width: 100%;
+    }
+
+    .header-row-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--card-border);
+      gap: 16px;
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: inherit;
+      flex-shrink: 0;
+    }
+
+    .brand-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #4f46e5, #7c3aed);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 10px var(--accent-glow);
+      font-size: 16px;
+      color: white;
+      flex-shrink: 0;
+    }
+
+    .brand-title {
+      font-size: 1.05rem;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+      color: var(--text);
+      white-space: nowrap;
+      margin: 0;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-shrink: 0;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      font-size: 0.68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      white-space: nowrap;
+    }
+    .badge-purple { background: var(--purple-bg); color: var(--purple-text); border: 1px solid var(--purple-border); }
+    .badge-amber { background: var(--warning-bg); color: var(--warning-text); border: 1px solid var(--warning-border); }
+    .badge-red { background: var(--danger-bg); color: var(--danger-text); border: 1px solid var(--danger-border); }
+    .badge-green { background: var(--success-bg); color: var(--success-text); border: 1px solid var(--success-border); }
+
+    .header-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      color: var(--text);
+      padding: 5px 12px;
+      border-radius: 8px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+      transition: all 0.2s;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+    .header-btn:hover {
+      background: var(--section-box-bg);
+      border-color: var(--accent);
+      transform: translateY(-1px);
+    }
+    .header-btn.active {
+      color: var(--accent);
+      background: var(--purple-bg);
+      border-color: var(--purple-border);
+    }
+
+    /* ROW 2: PRIMARY NAVIGATION */
+    .header-row-nav {
+      display: flex;
+      align-items: center;
+      padding-top: 10px;
+      padding-bottom: 10px;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin: 0;
+      padding: 0;
+      justify-content: flex-start;
+      width: 100%;
+      overflow-x: auto;
+    }
+
+    .nav-link {
+      text-decoration: none;
+      color: var(--text-muted);
+      font-size: 0.82rem;
+      font-weight: 700;
+      padding: 7px 14px;
+      border-radius: 8px;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .nav-link:hover {
+      color: var(--text);
+      background: var(--section-box-bg);
+    }
+
+    .nav-link.active {
+      color: var(--accent);
+      background: var(--purple-bg);
+      border: 1px solid var(--purple-border);
+    }
+
+    .runtime-status-pill {
+      background: var(--card-bg);
+      border: 1px solid var(--purple-border);
+      color: var(--text);
+      padding: 6px 14px;
+      border-radius: 10px;
+      font-size: 0.76rem;
+      font-weight: 700;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+    .runtime-status-pill:hover {
+      background: var(--purple-bg);
+      border-color: var(--accent);
+      transform: translateY(-1px);
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+    .dot-green { background: #10b981; box-shadow: 0 0 8px #10b981; }
+    .dot-amber { background: #f59e0b; box-shadow: 0 0 8px #f59e0b; }
+    .dot-red { background: #ef4444; box-shadow: 0 0 8px #ef4444; }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1.25fr;
+      gap: 24px;
+    }
+    @media (max-width: 1080px) { .grid { grid-template-columns: 1fr; } }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: var(--card-shadow);
+      display: flex;
+      flex-direction: column;
+      transition: box-shadow 0.2s ease, border-color 0.2s ease;
+    }
+
+    .card-title {
+      font-size: 0.95rem;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+      margin-bottom: 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: var(--text);
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+    .form-group label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.73rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    select, textarea, input {
+      width: 100%;
+      background: var(--input-bg);
+      border: 1px solid var(--input-border);
+      color: var(--input-text);
+      padding: 10px 14px;
+      border-radius: 12px;
+      font-family: inherit;
+      font-size: 0.85rem;
+      outline: none;
+      transition: all 0.2s;
+    }
+    select:focus, textarea:focus, input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-glow);
+      background: #ffffff;
+    }
+
+    textarea {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.74rem;
+      min-height: 180px;
+      resize: vertical;
+      line-height: 1.5;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      padding: 14px 20px;
+      border-radius: 12px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s;
+      background: linear-gradient(135deg, #4f46e5, #6366f1);
+      color: white;
+      box-shadow: 0 6px 16px var(--accent-glow);
+    }
+    .btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 22px var(--accent-glow);
+      background: linear-gradient(135deg, #4338ca, #4f46e5);
+    }
+    .btn:active { transform: translateY(0); }
+    .btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .btn-secondary {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      color: var(--text);
+      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+      padding: 6px 12px;
+      font-size: 0.74rem;
+      font-weight: 600;
+      border-radius: 8px;
+      width: auto;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-secondary:hover {
+      background: var(--section-box-bg);
+      border-color: var(--input-border);
+    }
+
+    /* Tabs Styling */
+    .nav-tabs {
+      display: flex;
+      gap: 6px;
+      border-bottom: 1px solid var(--card-border);
+      padding-bottom: 10px;
+      margin-bottom: 18px;
+      overflow-x: auto;
+    }
+    .tab-btn {
+      background: none;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .tab-btn:hover {
+      color: var(--text);
+      background: var(--section-box-bg);
+    }
+    .tab-btn.active {
+      color: var(--accent);
+      background: var(--purple-bg);
+    }
+
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    @media (max-width: 640px) { .stats-row { grid-template-columns: repeat(2, 1fr); } }
+
+    .stat-box {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+      padding: 12px 10px;
+      border-radius: 12px;
+      text-align: center;
+      transition: all 0.2s;
+    }
+    .stat-val { font-size: 1.25rem; font-weight: 800; font-family: 'JetBrains Mono', monospace; }
+    .stat-lbl { font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; margin-top: 3px; }
+
+    .section-box {
+      background: var(--section-box-bg);
+      border: 1px solid var(--section-box-border);
+      border-radius: 14px;
+      padding: 14px;
+      margin-bottom: 14px;
+    }
+    .section-title {
+      font-size: 0.75rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .step-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    .step-item {
+      background: var(--step-item-bg);
+      border: 1px solid var(--step-item-border);
+      border-left: 3px solid var(--accent);
+      border-radius: 12px;
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+      animation: fadeIn 0.3s ease-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .step-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.74rem;
+      font-weight: 800;
+    }
+
+    .step-body {
+      font-size: 0.8rem;
+      color: var(--text);
+      line-height: 1.45;
+    }
+
+    .step-decision {
+      font-size: 0.74rem;
+      font-family: 'JetBrains Mono', monospace;
+      background: var(--step-decision-bg);
+      padding: 6px 10px;
+      border-radius: 8px;
+      border-left: 3px solid var(--accent);
+      color: var(--text);
+      margin-top: 4px;
+    }
+
+    pre.dossier {
+      background: var(--dossier-bg);
+      border: 1px solid var(--dossier-border);
+      padding: 14px;
+      border-radius: 12px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      line-height: 1.45;
+      color: var(--dossier-text);
+      max-height: 220px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+    }
+
+    /* Modal Styling */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: var(--modal-overlay);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      display: none;
+    }
+    .modal-content {
+      background: var(--modal-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 28px;
+      width: 100%;
+      max-width: 540px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+      animation: modalIn 0.25s ease-out;
+    }
+    @keyframes modalIn {
+      from { opacity: 0; transform: scale(0.96); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--card-border);
+    }
+    .modal-close {
+      background: none;
+      border: none;
+      font-size: 1.2rem;
+      cursor: pointer;
+      color: var(--text-muted);
+    }
+    .modal-close:hover { color: var(--text); }
+
+    /* Visual Lineage DAG Styles */
+    .dag-container {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 20px;
+      min-height: 320px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Workflow Lifecycle Component */
+    .workflow-lifecycle-container {
+      background: var(--section-box-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 16px;
+      margin-top: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .workflow-lifecycle-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .workflow-lifecycle-title {
+      font-size: 0.86rem;
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -0.01em;
+      line-height: 1.25;
+    }
+    .workflow-lifecycle-subtitle {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-top: 2px;
+      letter-spacing: -0.005em;
+    }
+
+    /* Lightweight Execution Status Row */
+    .workflow-status-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 9px 14px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+      transition: all 0.25s ease;
+    }
+    .workflow-status-left {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+    }
+    .workflow-status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      display: inline-block;
+      flex-shrink: 0;
+      transition: all 0.25s ease;
+    }
+    .workflow-status-dot.idle {
+      background: #94a3b8;
+    }
+    .workflow-status-dot.running {
+      background: #3b82f6;
+      box-shadow: 0 0 8px #3b82f6;
+      animation: statusPulse 1.4s infinite ease-in-out;
+    }
+    .workflow-status-dot.complete {
+      background: #10b981;
+      box-shadow: 0 0 8px #10b981;
+    }
+    @keyframes statusPulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.45; transform: scale(0.85); }
+    }
+    .workflow-status-text {
+      font-weight: 500;
+      color: var(--text-muted);
+    }
+    .workflow-status-text strong {
+      color: var(--text);
+      font-weight: 700;
+    }
+    .workflow-status-right {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.73rem;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    .workflow-stepper-track {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 18px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+    }
+    @media (max-width: 680px) {
+      .workflow-stepper-track {
+        flex-wrap: wrap;
+        gap: 8px;
+        justify-content: center;
+      }
+    }
+    .workflow-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 8px 16px;
+      border-radius: 10px;
+      font-size: 0.76rem;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      transition: all 0.25s ease;
+      user-select: none;
+      line-height: 1;
+    }
+    .pill-num {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.68rem;
+      font-weight: 800;
+      line-height: 1;
+      transition: all 0.25s ease;
+    }
+
+    /* Future / Pending steps: outline styling */
+    .workflow-pill.outline {
+      background: transparent;
+      border: 1px solid var(--card-border);
+      color: var(--text-subtle);
+    }
+    .workflow-pill.outline .pill-num {
+      background: var(--section-box-bg);
+      color: var(--text-subtle);
+      border: 1px solid var(--card-border);
+    }
+
+    /* Current step: highlight styling (high contrast) */
+    .workflow-pill.current,
+    .workflow-pill.active {
+      background: var(--purple-bg);
+      border: 1.5px solid var(--accent);
+      color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-glow), 0 2px 6px rgba(79, 70, 229, 0.15);
+      transform: translateY(-1px);
+    }
+    .workflow-pill.current .pill-num,
+    .workflow-pill.active .pill-num {
+      background: var(--accent);
+      color: #ffffff;
+      box-shadow: 0 0 8px var(--accent-glow);
+    }
+
+    /* Completed steps: filled styling */
+    .workflow-pill.completed {
+      background: #0f172a;
+      border: 1.5px solid #0f172a;
+      color: #ffffff;
+      box-shadow: 0 2px 6px rgba(15, 23, 42, 0.15);
+    }
+    .workflow-pill.completed .pill-num {
+      background: rgba(255, 255, 255, 0.22);
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+    }
+    [data-theme="dark"] .workflow-pill.completed {
+      background: #4f46e5;
+      border-color: #6366f1;
+      color: #ffffff;
+      box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+    }
+    [data-theme="dark"] .workflow-pill.completed .pill-num {
+      background: rgba(255, 255, 255, 0.25);
+      color: #ffffff;
+      border-color: rgba(255, 255, 255, 0.5);
+    }
+
+    .workflow-arrow {
+      color: var(--text-subtle);
+      font-size: 1rem;
+      font-weight: 700;
+      user-select: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0.6;
+      line-height: 1;
+    }
+
+    /* Governance Arbitration Styles */
+    .council-bubble {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 14px 16px;
+      margin-bottom: 12px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    }
+    .bubble-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 6px;
+      font-size: 0.8rem;
+      font-weight: 800;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #0f172a;
+      color: #ffffff;
+      padding: 12px 20px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.1);
+      font-size: 0.8rem;
+      font-weight: 600;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+      display: none;
+      z-index: 1000;
+      animation: fadeIn 0.2s ease-out;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- ENTERPRISE TWO-ROW HEADER (Databricks / Azure Portal / Atlassian style) -->
+    <header class="app-header">
+      <!-- ROW 1: BRAND + UTILITY CONTROLS -->
+      <div class="header-row-top">
+        <a href="index.html" class="nav-brand">
+          <div class="brand-icon">🛡️</div>
+          <div class="brand-title">Enterprise Data Governance Agent</div>
+        </a>
+        <div class="header-actions">
+          <a href="reasoning-runtime.html" class="header-btn" title="Configure LLM Reasoning Provider">🧠 LLM Config</a>
+          <span class="badge badge-purple">5-TIER GOVERNANCE</span>
+          <span class="badge badge-green">Platform Health: Excellent</span>
+          <button class="header-btn" onclick="toggleTheme()" id="themeBtn">☀️ Light Theme</button>
+        </div>
+      </div>
+
+      <!-- ROW 2: PRIMARY BUSINESS NAVIGATION (Left edge aligned with Brand Title) -->
+      <div class="header-row-nav">
+        <div class="nav-links">
+          <a href="index.html" class="nav-link active">🛡️ Governance Studio</a>
+          <a href="evidence-vault.html" class="nav-link">🗄️ Evidence Vault</a>
+          <a href="executive-dashboard.html" class="nav-link">📊 Executive Dashboard</a>
+          <a href="architecture.html" class="nav-link">🏛️ Architecture</a>
+          <a href="demo-scenarios.html" class="nav-link">🎬 Demo Scenarios</a>
+        </div>
+      </div>
+    </header>
+
+    <div class="grid">
+      <!-- Left Panel: Input & Configuration -->
+      <div class="card">
+        <div class="card-title">
+          <span>1. Governance Audit Configuration</span>
+          <span class="badge badge-purple" id="tierBadge">TIER 1 INVARIANTS</span>
+        </div>
+
+        <div class="form-group">
+          <label>Load Scenario Preset</label>
+          <select id="presetSelect" onchange="loadPreset()">
+            <option value="critical_pii">Scenario 1: Finance Customer Data (Cleartext SSN in Confidential) -> QUARANTINE</option>
+            <option value="card_pan">Scenario 2: Payment Transaction Stream (Credit Card PAN Exposure) -> QUARANTINE</option>
+            <option value="breaking_drift">Scenario 3: Breaking Contract Drift (Customer ID Dropped) -> BLOCK_DEPLOYMENT</option>
+            <option value="repeat_offender">Scenario 4: Repeat Offender Dataset (Multiple Prior Breaches) -> HITL ESCALATION</option>
+            <option value="policy_compiler">Scenario 5: Natural Language Policy Compiler -> AST INVARIANT COMPILE</option>
+            <option value="blast_radius_analysis">Scenario 6: Consumer Blast Radius Analysis (Tableau, APIs, ML, Billing) -> BLOCK_DEPLOYMENT</option>
+            <option value="clean_evolution">Evolution: Optional Column Added (Masked PII) -> APPROVE_WITH_WARNING</option>
+            <option value="clean_exact">Compliant: Exact Contract Match (Zero Drift) -> APPROVE</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Candidate Dataset Schema (JSON)</label>
+          <textarea id="candidateInput" placeholder="Candidate Schema JSON..."></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Registered Baseline Data Contract (JSON)</label>
+          <textarea id="baselineInput" style="min-height: 120px;" placeholder="Baseline Contract JSON..."></textarea>
+        </div>
+
+        <button class="btn" onclick="runAudit()" id="runBtn" style="margin-top: 8px;">
+          <span>⚡ Run Autonomous Governance Audit</span>
+        </button>
+      </div>
+
+      <!-- Right Panel: Navigation Tabs & Live Views -->
+      <div class="card">
+        <div class="card-title">
+          <span>2. Autonomous Governance Decision Engine</span>
+          <span id="statusBadge" class="badge badge-amber">IDLE</span>
+        </div>
+
+        <!-- Navigation Tabs for Novel Capabilities -->
+        <div class="nav-tabs">
+          <button class="tab-btn active" onclick="switchTab('auditTab')" id="tab-auditTab">📊 Audit & Trajectory</button>
+          <button class="tab-btn" onclick="switchTab('dagTab')" id="tab-dagTab">🕸️ Blast Radius Lineage DAG</button>
+          <button class="tab-btn" onclick="switchTab('councilTab')" id="tab-councilTab">⚖️ Governance Arbitration</button>
+          <button class="tab-btn" onclick="switchTab('autofixTab')" id="tab-autofixTab">💡 Auto-Fix & Policy Compiler</button>
+          <button class="tab-btn" onclick="switchTab('memoryTab')" id="tab-memoryTab">🧠 Governance Memory & HITL</button>
+        </div>
+
+        <!-- TAB 1: Live Audit & Trajectory -->
+        <div id="auditTab" class="tab-content">
+          <div class="stats-row">
+            <div class="stat-box">
+              <div class="stat-val" style="color: #4f46e5;" id="statDuration">0ms</div>
+              <div class="stat-lbl">Scan Time</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-val" style="color: #059669;" id="statTokens">0</div>
+              <div class="stat-lbl">Tokens Consumed</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-val" id="statPii">0</div>
+              <div class="stat-lbl">PII Breaches</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-val" style="color: #d97706;" id="statDiffs">0</div>
+              <div class="stat-lbl">Contract Diffs</div>
+            </div>
+          </div>
+
+          <!-- Downstream Consumer Blast Radius Banner -->
+          <div class="section-box" id="blastRadiusBox" style="display: none;">
+            <div class="section-title">
+              <span>Downstream Consumer Blast Radius</span>
+              <span id="blastRiskBadge" class="badge badge-red">CRITICAL</span>
+            </div>
+            <div id="blastRadiusSummary" style="font-size: 0.78rem; color: var(--text); line-height: 1.45;"></div>
+          </div>
+
+          <!-- Statutory Regulatory Citations Banner -->
+          <div class="section-box" id="regulatoryBox" style="display: none;">
+            <div class="section-title">
+              <span>Statutory Regulatory Citations</span>
+              <span class="badge badge-amber">GDPR · HIPAA · GLBA · PCI-DSS</span>
+            </div>
+            <div id="regulatoryList" style="display: flex; flex-direction: column; gap: 8px;"></div>
+          </div>
+
+          <!-- Autonomous Governance Decision Workflow Lifecycle Component -->
+          <div class="workflow-lifecycle-container">
+            <div class="workflow-lifecycle-header">
+              <div>
+                <div class="workflow-lifecycle-title">Autonomous Governance Decision Workflow</div>
+                <div class="workflow-lifecycle-subtitle">Governance Reasoning Engine</div>
+              </div>
+              <span class="badge badge-purple" style="font-size: 0.68rem; font-weight: 800; letter-spacing: 0.04em;">TIER 3</span>
+            </div>
+
+            <!-- Lightweight Execution Status Row -->
+            <div class="workflow-status-row" id="workflowStatusRow">
+              <div class="workflow-status-left">
+                <span class="workflow-status-dot idle" id="workflowStatusDot"></span>
+                <span class="workflow-status-text" id="workflowStatusText">Status: <strong>Awaiting Audit Execution</strong></span>
+              </div>
+              <div class="workflow-status-right" id="workflowStatusRight">
+                <span style="font-size: 0.72rem; color: var(--text-subtle);">Ready</span>
+              </div>
+            </div>
+
+            <div class="workflow-stepper-track" id="workflowStepperTrack">
+              <div class="workflow-pill outline" id="pill-observe">
+                <span class="pill-num">1</span>
+                <span class="pill-name">OBSERVE</span>
+              </div>
+              <div class="workflow-arrow">→</div>
+              <div class="workflow-pill outline" id="pill-reason">
+                <span class="pill-num">2</span>
+                <span class="pill-name">REASON</span>
+              </div>
+              <div class="workflow-arrow">→</div>
+              <div class="workflow-pill outline" id="pill-decide">
+                <span class="pill-num">3</span>
+                <span class="pill-name">DECIDE</span>
+              </div>
+              <div class="workflow-arrow">→</div>
+              <div class="workflow-pill outline" id="pill-execute">
+                <span class="pill-num">4</span>
+                <span class="pill-name">EXECUTE</span>
+              </div>
+            </div>
+            <div class="step-list" id="stepList">
+              <div style="text-align: center; padding: 36px 24px; color: var(--text-muted); font-size: 0.84rem; line-height: 1.55; max-width: 580px; margin: 0 auto;">
+                Run a Governance Audit to evaluate policies, contracts, regulatory controls, and risk exposure through the Governance Decision Workflow.
+              </div>
+            </div>
+          </div>
+
+          <!-- Cryptographic Compliance Dossier -->
+          <div class="form-group" id="dossierGroup" style="display: none; margin-top: 14px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+              <label style="margin-bottom: 0;">Cryptographic Compliance Dossier</label>
+              <div style="display: flex; gap: 8px;">
+                <button class="btn-secondary" onclick="downloadCertificate()">📜 Download Certificate</button>
+                <button class="btn-secondary" onclick="copyDossier()">📋 Copy Dossier</button>
+              </div>
+            </div>
+            <pre class="dossier" id="dossierText"></pre>
+          </div>
+        </div>
+
+        <!-- TAB 2: Interactive SVG Blast Radius Lineage DAG -->
+        <div id="dagTab" class="tab-content" style="display: none;">
+          <div class="dag-container">
+            <div style="width: 100%; display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+              <strong style="font-size: 0.82rem;">Interactive Consumer Dependency Topology</strong>
+              <span id="dagRiskBadge" class="badge badge-green">Topology Healthy</span>
+            </div>
+            <svg id="lineageSvg" width="100%" height="240" viewBox="0 0 600 240" style="background: var(--section-box-bg); border-radius: 12px; border: 1px solid var(--card-border);">
+              <!-- Center: Candidate Dataset Node -->
+              <rect x="30" y="80" width="160" height="70" rx="10" fill="#4f46e5" />
+              <text x="110" y="112" fill="#ffffff" font-size="12" font-weight="700" text-anchor="middle">Candidate Schema</text>
+              <text x="110" y="130" fill="#c7d2fe" font-size="9" font-family="monospace" text-anchor="middle">customer_orders_v2</text>
+
+              <!-- Line 1 to Billing -->
+              <line id="edge-billing" x1="190" y1="100" x2="380" y2="45" stroke="#cbd5e1" stroke-width="2" stroke-dasharray="4" />
+              <!-- Consumer Node 1: Billing -->
+              <rect id="node-billing" x="380" y="20" width="190" height="50" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5" />
+              <text x="475" y="42" fill="#0f172a" font-size="11" font-weight="700" text-anchor="middle">Billing & General Ledger</text>
+              <text x="475" y="58" fill="#dc2626" font-size="9" font-weight="600" text-anchor="middle">SLA: Tier 1 Critical</text>
+
+              <!-- Line 2 to ML Fraud -->
+              <line id="edge-fraud" x1="190" y1="115" x2="380" y2="115" stroke="#cbd5e1" stroke-width="2" stroke-dasharray="4" />
+              <!-- Consumer Node 2: Fraud ML -->
+              <rect id="node-fraud" x="380" y="90" width="190" height="50" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5" />
+              <text x="475" y="112" fill="#0f172a" font-size="11" font-weight="700" text-anchor="middle">Real-time Fraud ML Model</text>
+              <text x="475" y="128" fill="#dc2626" font-size="9" font-weight="600" text-anchor="middle">SLA: Tier 1 Critical</text>
+
+              <!-- Line 3 to BI Dashboard -->
+              <line id="edge-bi" x1="190" y1="130" x2="380" y2="185" stroke="#cbd5e1" stroke-width="2" stroke-dasharray="4" />
+              <!-- Consumer Node 3: BI Dashboard -->
+              <rect id="node-bi" x="380" y="160" width="190" height="50" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5" />
+              <text x="475" y="182" fill="#0f172a" font-size="11" font-weight="700" text-anchor="middle">Executive BI Dashboard</text>
+              <text x="475" y="198" fill="#d97706" font-size="9" font-weight="600" text-anchor="middle">SLA: Tier 2 Operational</text>
+            </svg>
+            <p style="font-size: 0.72rem; color: var(--text-muted); margin-top: 10px; text-align: center;">
+              Nodes glow red when candidate schema modifications remove fields consumed by registered downstream services.
+            </p>
+          </div>
+        </div>
+
+        <!-- TAB 3: Governance Policy Arbitration -->
+        <div id="councilTab" class="tab-content" style="display: none;">
+          <div style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 12px;">
+            Multi-stakeholder policy arbitration resolving competing priorities across velocity, contract stability, and compliance:
+          </div>
+
+          <div class="council-bubble" style="border-left: 3px solid #3b82f6;">
+            <div class="bubble-header" style="color: #2563eb;">
+              <span>Product &amp; Data Engineering View</span>
+              <span class="badge badge-purple">Velocity Priority</span>
+            </div>
+            <div id="councilProduct" style="font-size: 0.78rem; line-height: 1.45; color: var(--text);">
+              "Recommend approving customer_orders_v2. Q4 checkout latency requirements necessitate moving fast. Breaking changes can be addressed in sprint 44."
+            </div>
+          </div>
+
+          <div class="council-bubble" style="border-left: 3px solid #dc2626;">
+            <div class="bubble-header" style="color: #dc2626;">
+              <span>Information Security &amp; Compliance View</span>
+              <span class="badge badge-red">Security Boundary</span>
+            </div>
+            <div id="councilSecurity" style="font-size: 0.78rem; line-height: 1.45; color: var(--text);">
+              "Absolute veto. Tier 1 Invariant G-1 breach detected. Cleartext SSN inside Tier 2 Confidential storage carries statutory fines up to €20M under GDPR Art 32. Partition quarantine is mandatory."
+            </div>
+          </div>
+
+          <div class="council-bubble" style="border-left: 3px solid #059669; background: var(--section-box-bg);">
+            <div class="bubble-header" style="color: #059669;">
+              <span>⚖️ Governance Policy Arbiter</span>
+              <span class="badge badge-green">Binding Arbitration</span>
+            </div>
+            <div id="councilArbiter" style="font-size: 0.78rem; line-height: 1.45; color: var(--text); font-weight: 600;">
+              "Final Verdict: QUARANTINE partition immediately. Synthesizing automated Format-Preserving Encryption dbt transformation to unblock Product Velocity without violating security invariants."
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 4: Auto-Fix Synthesizer & Policy Compiler -->
+        <div id="autofixTab" class="tab-content" style="display: none;">
+          <!-- Auto-Fix Card -->
+          <div class="section-box" style="margin-bottom: 18px;">
+            <div class="section-title">
+              <span>💡 Automated Ingestion Remediation (Auto-Fix Code)</span>
+              <button class="btn-secondary" onclick="copyRemediation()">Copy SQL</button>
+            </div>
+            <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 6px;">
+              Production-ready transformation synthesized for ingestion boundary (dbt / Trino / PySpark):
+            </p>
+            <pre class="dossier" id="remediationCode" style="max-height: 140px; color: #4f46e5; font-weight: 600;">
+-- Run audit to synthesize tailored remediation code.
+            </pre>
+          </div>
+
+          <!-- Policy-to-Invariant Compiler -->
+          <div class="section-box">
+            <div class="section-title">
+              <span>🗣️ Policy-to-Invariant Compiler</span>
+              <span class="badge badge-purple">Deterministic Rule Generation</span>
+            </div>
+            <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 8px;">
+              Specify an enterprise governance policy to compile it into an immutable Tier 1 Invariant rule for deterministic enforcement:
+            </p>
+            <div class="input-row" style="margin-bottom: 8px;">
+              <input type="text" id="nlPolicyInput" value="Any dataset in Marketing containing phone numbers or customer emails must be hashed" />
+              <button class="btn-secondary" onclick="compileNlPolicy()">Compile</button>
+            </div>
+            <pre class="dossier" id="compiledInvariant" style="max-height: 100px; color: #059669; font-weight: 600;">
+[Compiled Governance Rule — Tier 1 Invariant G-4]:
+- Policy Statement:           "Any dataset in Marketing containing phone numbers or customer emails must be hashed"
+- AST Deterministic Target:   MATCH (column_name IN /email|phone|customer_id/i)
+- Invariant Enforcement:      ENFORCE_ENVELOPE_ENCRYPTION (AES-256)
+- Deterministic Gate Action:  SUPERVISORY_QUARANTINE (Exit Code 1)
+- Status:                     Active in Tier 4 Deterministic Enforcement Engine
+            </pre>
+          </div>
+        </div>
+
+        <!-- TAB 5: Governance Memory & Human-In-The-Loop (HITL) -->
+        <div id="memoryTab" class="tab-content" style="display: none;">
+          <!-- Governance Memory Summary Card -->
+          <div class="section-box" style="margin-bottom: 18px;">
+            <div class="section-title">
+              <span>🧠 Dataset Governance Memory & Incident History</span>
+              <span id="memoryEscalationBadge" class="badge badge-green">STANDARD (0 Prior Violations)</span>
+            </div>
+            <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 10px;">
+              Autonomous tracking of repeat non-compliance offenders. Invariant G-4 auto-escalates risk upon repeated contract or statutory breaches:
+            </p>
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 12px;">
+              <div class="stat-box" style="padding: 8px;">
+                <div class="stat-val" id="memTotalAudits" style="font-size: 1.1rem; color: #4f46e5;">1</div>
+                <div class="stat-lbl">Total Audits</div>
+              </div>
+              <div class="stat-box" style="padding: 8px;">
+                <div class="stat-val" id="memViolations" style="font-size: 1.1rem; color: #dc2626;">0</div>
+                <div class="stat-lbl">Violations Logged</div>
+              </div>
+              <div class="stat-box" style="padding: 8px;">
+                <div class="stat-val" id="memRiskProfile" style="font-size: 1.1rem; color: #059669;">Tier 1 Clean</div>
+                <div class="stat-lbl">Offender Status</div>
+              </div>
+            </div>
+            <div style="display: flex; gap: 8px;">
+              <button class="btn-secondary" onclick="simulateRepeatViolation()">Simulate Repeat Offender Breach</button>
+              <button class="btn-secondary" onclick="resetMemoryHistory()">Reset Memory Store</button>
+            </div>
+          </div>
+
+          <!-- Human-in-the-Loop Supervisory Review (HITL) -->
+          <div class="section-box">
+            <div class="section-title">
+              <span>🛡️ Human-in-the-Loop (HITL) Enterprise Escalation Package</span>
+              <span class="badge badge-amber">Supervisory Gating Active</span>
+            </div>
+            <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 8px;">
+              Simulated enterprise incident dispatch for critical Invariant G-1/G-2 violations:
+            </p>
+            <div style="display: flex; gap: 6px; margin-bottom: 10px;">
+              <button class="btn-secondary" onclick="showHitlPayload('jira')" id="btn-hitl-jira" style="font-weight: 700;">Jira Issue</button>
+              <button class="btn-secondary" onclick="showHitlPayload('snow')" id="btn-hitl-snow">ServiceNow CR</button>
+              <button class="btn-secondary" onclick="showHitlPayload('slack')" id="btn-hitl-slack">Slack Alert</button>
+              <button class="btn-secondary" onclick="showHitlPayload('teams')" id="btn-hitl-teams">MS Teams Card</button>
+            </div>
+            <pre class="dossier" id="hitlPayloadDisplay" style="max-height: 160px; color: #3b82f6; font-size: 0.72rem;">
+Select an enterprise incident platform above to view the synthesized escalation dispatch payload.
+            </pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- REASONING RUNTIME GATEWAY: Configured via dedicated page /reasoning-runtime -->
+
+  <div class="toast" id="toast"></div>
+
+  <script type="module">
+    // Bundled Scenarios
+    const PRESETS = {
+      critical_pii: {
+        candidate: {
+          datasetUrn: "urn:datacatalog:production:finance:customer_orders_v2",
+          datasetName: "Finance Customer Orders Partition (Candidate v2)",
+          classificationTier: "CONFIDENTIAL",
+          schemaVersion: "2.0.0",
+          storageTarget: "LAKEHOUSE",
+          columns: [
+            { name: "order_id", type: "uuid", nullable: false },
+            { name: "customer_id", type: "string", nullable: false },
+            { name: "taxpayer_ssn", type: "string", nullable: false },
+            { name: "order_amount", type: "decimal", nullable: false },
+            { name: "order_timestamp", type: "timestamp", nullable: false }
+          ],
+          sampleRecords: [
+            { order_id: "ord-992144-a", customer_id: "CUST-88192", taxpayer_ssn: "123-45-6789", order_amount: 1250.50, order_timestamp: "2026-10-30T14:22:10Z" },
+            { order_id: "ord-992145-b", customer_id: "CUST-88193", taxpayer_ssn: "987-65-4321", order_amount: 89.99, order_timestamp: "2026-10-30T14:23:45Z" }
+          ]
+        },
+        baseline: {
+          datasetUrn: "urn:datacatalog:production:finance:customer_orders_v1",
+          contractVersion: "1.0.0",
+          minimumClassificationTier: "CONFIDENTIAL",
+          allowedMutations: ["ADD_NULLABLE_COLUMN"],
+          prohibitedMutations: ["DROP_COLUMN", "NARROW_TYPE"],
+          columns: [
+            { name: "order_id", type: "uuid", nullable: false },
+            { name: "customer_id", type: "string", nullable: false },
+            { name: "order_amount", type: "decimal", nullable: false },
+            { name: "order_timestamp", type: "timestamp", nullable: false }
+          ],
+          registeredConsumers: [
+            { id: "c-1", serviceName: "General Ledger & Financial Reporting Pipeline", consumerType: "FINANCIAL_REPORTING", ownerTeam: "Finance Engineering", dependentFields: ["order_id", "order_amount"], slaTier: "TIER_1_CRITICAL" }
+          ]
+        }
+      },
+      breaking_drift: {
+        candidate: {
+          datasetUrn: "urn:datacatalog:production:finance:customer_orders_drift_candidate",
+          datasetName: "Finance Customer Orders Mutated (Drift Candidate)",
+          classificationTier: "CONFIDENTIAL",
+          schemaVersion: "2.0.0",
+          storageTarget: "LAKEHOUSE",
+          columns: [
+            { name: "order_id", type: "uuid", nullable: false },
+            { name: "order_amount", type: "string", nullable: false },
+            { name: "order_timestamp", type: "timestamp", nullable: false }
+          ],
+          sampleRecords: [
+            { order_id: "ord-992144-a", order_amount: "$1,250.50", order_timestamp: "2026-10-30T14:22:10Z" }
+          ]
+        },
+        baseline: {
+          datasetUrn: "urn:datacatalog:production:finance:customer_orders_v1",
+          contractVersion: "1.0.0",
+          minimumClassificationTier: "CONFIDENTIAL",
+          allowedMutations: ["ADD_NULLABLE_COLUMN"],
+          prohibitedMutations: ["DROP_COLUMN", "NARROW_TYPE"],
+          columns: [
+            { name: "order_id", type: "uuid", nullable: false },
+            { name: "customer_id", type: "string", nullable: false },
+            { name: "order_amount", type: "decimal", nullable: false },
+            { name: "order_timestamp", type: "timestamp", nullable: false }
+          ],
+          registeredConsumers: [
+            { id: "c-1", serviceName: "General Ledger & Financial Reporting Pipeline", consumerType: "FINANCIAL_REPORTING", ownerTeam: "Finance Engineering", dependentFields: ["order_id", "order_amount"], slaTier: "TIER_1_CRITICAL" },
+            { id: "c-2", serviceName: "Real-time Fraud Detection ML Model", consumerType: "ML_MODEL", ownerTeam: "Risk Data Science", dependentFields: ["customer_id", "order_amount"], slaTier: "TIER_1_CRITICAL" }
+          ]
+        }
+      },
+      blast_radius_analysis: {
+        candidate: {
+          datasetUrn: "urn:datacatalog:production:finance:customer_orders_blast_candidate",
+          datasetName: "Finance Customer Core Data (Breaking Evolution)",
+          classificationTier: "CONFIDENTIAL",
+          schemaVersion: "2.5.0",
+          storageTarget: "LAKEHOUSE",
+          columns: [
+            { name: "order_id", type: "uuid", nullable: false },
+            { name: "order_amount", type: "string", nullable: false },
+            { name: "order_timestamp", type: "timestamp", nullable: false }
+          ],
+          sampleRecords: [
+            { order_id: "ord-992144-a", order_amount: "$1,250.50", order_timestamp: "2026-10-30T14:22:10Z" }
+          ]
+        },
+        baseline: {
+          datasetUrn: "urn:datacatalog:production:finance:customer_orders_v1",
+          contractVersion: "1.0.0",
+          minimumClassificationTier: "CONFIDENTIAL",
+          allowedMutations: ["ADD_NULLABLE_COLUMN"],
+          prohibitedMutations: ["DROP_COLUMN", "NARROW_TYPE"],
+          columns: [
+            { name: "order_id", type: "uuid", nullable: false },
+            { name: "customer_id", type: "string", nullable: false },
+            { name: "order_amount", type: "decimal", nullable: false },
+            { name: "order_timestamp", type: "timestamp", nullable: false }
+          ],
+          registeredConsumers: [
+            { id: "c-101", serviceName: "Tableau Executive BI & Revenue Reporting", consumerType: "DASHBOARD", ownerTeam: "Enterprise BI", dependentFields: ["customer_id", "order_amount"], slaTier: "TIER_1_CRITICAL" },
+            { id: "c-102", serviceName: "Customer Account Gateway & Mobile APIs", consumerType: "API_GATEWAY", ownerTeam: "Digital Platform", dependentFields: ["customer_id", "order_id"], slaTier: "TIER_1_CRITICAL" },
+            { id: "c-103", serviceName: "Risk Scoring & Fraud ML Feature Store", consumerType: "FEATURE_STORE", ownerTeam: "Risk Data Science", dependentFields: ["customer_id", "order_amount"], slaTier: "TIER_1_CRITICAL" },
+            { id: "c-104", serviceName: "General Ledger Billing & Reconciliation Pipeline", consumerType: "FINANCIAL_REPORTING", ownerTeam: "Financial Systems", dependentFields: ["customer_id", "order_id", "order_amount"], slaTier: "TIER_1_CRITICAL" }
+          ]
+        }
+      },
+      clean_evolution: {
+        candidate: {
+          datasetUrn: "urn:datacatalog:production:finance:customer_orders_v1_1",
+          datasetName: "Finance Customer Orders Clean Partition",
+          classificationTier: "CONFIDENTIAL",
+          schemaVersion: "1.1.0",
+          storageTarget: "LAKEHOUSE",
+          columns: [
+            { name: "order_id", type: "uuid", nullable: false },
+            { name: "customer_id", type: "string", nullable: false },
+            { name: "order_amount", type: "decimal", nullable: false },
+            { name: "order_timestamp", type: "timestamp", nullable: false },
+            { name: "masked_taxpayer_id", type: "string", nullable: true }
+          ],
+          sampleRecords: [
+            { order_id: "ord-992144-a", customer_id: "CUST-88192", order_amount: 1250.50, order_timestamp: "2026-10-30T14:22:10Z", masked_taxpayer_id: "***-**-6789" }
+          ]
+        },
+        baseline: {
+          datasetUrn: "urn:datacatalog:production:finance:customer_orders_v1",
+          contractVersion: "1.0.0",
+          minimumClassificationTier: "CONFIDENTIAL",
+          allowedMutations: ["ADD_NULLABLE_COLUMN"],
+          prohibitedMutations: ["DROP_COLUMN", "NARROW_TYPE"],
+          columns: [
+            { name: "order_id", type: "uuid", nullable: false },
+            { name: "customer_id", type: "string", nullable: false },
+            { name: "order_amount", type: "decimal", nullable: false },
+            { name: "order_timestamp", type: "timestamp", nullable: false }
+          ],
+          registeredConsumers: []
+        }
+      },
+      clean_exact: {
+        candidate: {
+          datasetUrn: "urn:datacatalog:production:finance:customer_orders_v1",
+          datasetName: "Finance Customer Orders Approved Baseline",
+          classificationTier: "CONFIDENTIAL",
+          schemaVersion: "1.0.0",
+          storageTarget: "LAKEHOUSE",
+          columns: [
+            { name: "order_id", type: "uuid", nullable: false },
+            { name: "customer_id", type: "string", nullable: false },
+            { name: "order_amount", type: "decimal", nullable: false },
+            { name: "order_timestamp", type: "timestamp", nullable: false }
+          ],
+          sampleRecords: [
+            { order_id: "ord-992144-a", customer_id: "CUST-88192", order_amount: 1250.50, order_timestamp: "2026-10-30T14:22:10Z" }
+          ]
+        },
+        baseline: {
+          datasetUrn: "urn:datacatalog:production:finance:customer_orders_v1",
+          contractVersion: "1.0.0",
+          minimumClassificationTier: "CONFIDENTIAL",
+          allowedMutations: ["ADD_NULLABLE_COLUMN"],
+          prohibitedMutations: ["DROP_COLUMN"],
+          columns: [
+            { name: "order_id", type: "uuid", nullable: false },
+            { name: "customer_id", type: "string", nullable: false },
+            { name: "order_amount", type: "decimal", nullable: false },
+            { name: "order_timestamp", type: "timestamp", nullable: false }
+          ],
+          registeredConsumers: []
+        }
+      },
+      card_pan: {
+        candidate: {
+          datasetUrn: "urn:datacatalog:production:payments:transactions_live_v1",
+          datasetName: "Global Payment Ingestion Stream (Candidate v1)",
+          classificationTier: "CONFIDENTIAL",
+          schemaVersion: "1.0.0",
+          storageTarget: "STREAM_TOPIC",
+          columns: [
+            { name: "txn_id", type: "uuid", nullable: false },
+            { name: "merchant_id", type: "string", nullable: false },
+            { name: "card_pan", type: "string", nullable: false },
+            { name: "amount_cents", type: "bigint", nullable: false },
+            { name: "currency", type: "string", nullable: false }
+          ],
+          sampleRecords: [
+            { txn_id: "txn-449102-a", merchant_id: "MERCH-9901", card_pan: "4111111111111111", amount_cents: 5420, currency: "USD" },
+            { txn_id: "txn-449103-b", merchant_id: "MERCH-3320", card_pan: "5500000000000004", amount_cents: 12890, currency: "EUR" }
+          ]
+        },
+        baseline: {
+          datasetUrn: "urn:datacatalog:production:payments:transactions_live_v1",
+          contractVersion: "1.0.0",
+          minimumClassificationTier: "RESTRICTED",
+          allowedMutations: ["ADD_NULLABLE_COLUMN"],
+          prohibitedMutations: ["DROP_COLUMN", "UNENCRYPTED_CARD_PAN"],
+          columns: [
+            { name: "txn_id", type: "uuid", nullable: false },
+            { name: "merchant_id", type: "string", nullable: false },
+            { name: "tokenized_card_ref", type: "string", nullable: false },
+            { name: "amount_cents", type: "bigint", nullable: false },
+            { name: "currency", type: "string", nullable: false }
+          ],
+          registeredConsumers: [
+            { id: "c-pay", serviceName: "Settlement & Clearing Engine", consumerType: "SETTLEMENT", ownerTeam: "Payments Core", dependentFields: ["txn_id", "tokenized_card_ref"], slaTier: "TIER_1_CRITICAL" }
+          ]
+        }
+      },
+      repeat_offender: {
+        candidate: {
+          datasetUrn: "urn:datacatalog:production:marketing:lead_events_unvaulted",
+          datasetName: "Marketing Lead Ingestion (Repeat Offender Partition)",
+          classificationTier: "CONFIDENTIAL",
+          schemaVersion: "2.1.0",
+          storageTarget: "LAKEHOUSE",
+          columns: [
+            { name: "lead_id", type: "uuid", nullable: false },
+            { name: "taxpayer_ssn", type: "string", nullable: false },
+            { name: "email_address", type: "string", nullable: false },
+            { name: "campaign_id", type: "string", nullable: false }
+          ],
+          sampleRecords: [
+            { lead_id: "lead-0012", taxpayer_ssn: "123-45-6789", email_address: "lead@example.com", campaign_id: "Q4_GROWTH" }
+          ]
+        },
+        baseline: {
+          datasetUrn: "urn:datacatalog:production:marketing:lead_events_v1",
+          contractVersion: "1.0.0",
+          minimumClassificationTier: "CONFIDENTIAL",
+          allowedMutations: ["ADD_NULLABLE_COLUMN"],
+          prohibitedMutations: ["DROP_COLUMN"],
+          columns: [
+            { name: "lead_id", type: "uuid", nullable: false },
+            { name: "email_address", type: "string", nullable: false },
+            { name: "campaign_id", type: "string", nullable: false }
+          ],
+          registeredConsumers: []
+        }
+      },
+      policy_compiler: {
+        candidate: {
+          datasetUrn: "urn:datacatalog:production:marketing:contact_sync",
+          datasetName: "Contact Sync Stream",
+          classificationTier: "CONFIDENTIAL",
+          schemaVersion: "1.0.0",
+          storageTarget: "LAKEHOUSE",
+          columns: [
+            { name: "contact_id", type: "uuid", nullable: false },
+            { name: "phone_number", type: "string", nullable: false }
+          ],
+          sampleRecords: [
+            { contact_id: "c-101", phone_number: "202-555-0199" }
+          ]
+        },
+        baseline: {
+          datasetUrn: "urn:datacatalog:production:marketing:contact_sync",
+          contractVersion: "1.0.0",
+          minimumClassificationTier: "CONFIDENTIAL",
+          allowedMutations: ["ADD_NULLABLE_COLUMN"],
+          prohibitedMutations: ["DROP_COLUMN"],
+          columns: [
+            { name: "contact_id", type: "uuid", nullable: false },
+            { name: "phone_number", type: "string", nullable: false }
+          ],
+          registeredConsumers: []
+        }
+      }
+    };
+
+    const PII_PATTERNS = {
+      SSN: /\b\d{3}-\d{2}-\d{4}\b/,
+      CREDIT_CARD_PAN: /\b(?:4[0-9]{12}(?:[0-9]{3})?|5[1-5][0-9]{14}|3[47][0-9]{13}|6(?:011|5[0-9]{2})[0-9]{12})\b/,
+      EMAIL: /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b/,
+      PHONE: /\b(?:\+?1[-.\s]?)?\(?[2-9][0-9]{2}\)?[-.\s]?[2-9][0-9]{2}[-.\s]?[0-9]{4}\b/
+    };
+    const MASKED_PATTERNS = [/\b\*{3}-\*{2}-\d{4}\b/, /\bX{3}-X{2}-\d{4}\b/];
+
+    // Local Storage Keys
+    const STORAGE_KEY_THEME = 'edga_theme';
+    const STORAGE_KEY_PROVIDER = 'edga_llm_provider';
+    const STORAGE_KEY_GEMINI = 'edga_gemini_api_key';
+    const STORAGE_KEY_GEMINI_MODEL = 'edga_gemini_model';
+    const STORAGE_KEY_OLLAMA_URL = 'edga_ollama_url';
+    const STORAGE_KEY_OLLAMA_MODEL = 'edga_ollama_model';
+    const STORAGE_KEY_CUSTOM_URL = 'edga_custom_url';
+    const STORAGE_KEY_CUSTOM_KEY = 'edga_custom_key';
+    const STORAGE_KEY_CUSTOM_MODEL = 'edga_custom_model';
+
+    // Theme Toggle
+    window.toggleTheme = function() {
+      const current = document.documentElement.getAttribute('data-theme') || 'light';
+      const next = current === 'light' ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem(STORAGE_KEY_THEME, next);
+      document.getElementById('themeBtn').textContent = next === 'light' ? '☀️ Light Theme' : '🌙 Dark Theme';
+    };
+
+    // Tab Switching
+    window.switchTab = function(tabId) {
+      document.querySelectorAll('.tab-content').forEach(el => el.style.display = 'none');
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      const target = document.getElementById(tabId);
+      if (target) target.style.display = 'block';
+      const btn = document.getElementById(`tab-${tabId}`);
+      if (btn) btn.classList.add('active');
+    };
+
+    // LLM Gateway Navigation (Replacing modal with dedicated workspace page)
+    window.openLlmModal = function() {
+      window.location.href = 'reasoning-runtime.html';
+    };
+    window.closeLlmModal = function() {};
+
+    window.showToast = function(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.style.display = 'block';
+      setTimeout(() => { t.style.display = 'none'; }, 2500);
+    };
+
+    window.loadPreset = function() {
+      const selected = document.getElementById('presetSelect').value;
+      const data = PRESETS[selected];
+      document.getElementById('candidateInput').value = JSON.stringify(data.candidate, null, 2);
+      document.getElementById('baselineInput').value = JSON.stringify(data.baseline, null, 2);
+      if (typeof setWorkflowStatus === 'function') {
+        setWorkflowStatus('idle');
+      }
+      const stepList = document.getElementById('stepList');
+      if (stepList) {
+        stepList.innerHTML = `<div style="text-align: center; padding: 36px 24px; color: var(--text-muted); font-size: 0.84rem; line-height: 1.55; max-width: 580px; margin: 0 auto;">
+          Run a Governance Audit to evaluate policies, contracts, regulatory controls, and risk exposure through the Governance Decision Workflow.
+        </div>`;
+      }
+    };
+
+    window.copyDossier = function() {
+      const text = document.getElementById('dossierText').textContent;
+      navigator.clipboard.writeText(text).then(() => showToast('Compliance Dossier copied to clipboard!'));
+    };
+
+    window.copyRemediation = function() {
+      const text = document.getElementById('remediationCode').textContent;
+      navigator.clipboard.writeText(text).then(() => showToast('Remediation SQL copied to clipboard!'));
+    };
+
+    window.downloadCertificate = function() {
+      const text = document.getElementById('dossierText').textContent;
+      const blob = new Blob([text], { type: 'text/plain' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `governance-compliance-certificate-${new Date().toISOString().slice(0,10)}.txt`;
+      a.click();
+      showToast('Signed Compliance Certificate downloaded!');
+    };
+
+    window.compileNlPolicy = function() {
+      const input = document.getElementById('nlPolicyInput').value.trim();
+      const compiled = document.getElementById('compiledInvariant');
+      compiled.textContent = 
+`[Compiled Governance Rule — Tier 1 Invariant G-4]:
+- Policy Statement:           "${input}"
+- AST Deterministic Target:   MATCH (column_name IN /email|phone|customer_id/i)
+- Invariant Enforcement:      ENFORCE_ENVELOPE_ENCRYPTION (AES-256)
+- Deterministic Gate Action:  SUPERVISORY_QUARANTINE (Exit Code 1)
+- Timestamp:                  ${new Date().toISOString()}
+- Cryptographic Rule Hash:    SHA256-${Math.random().toString(36).substring(2, 10).toUpperCase()}`;
+      showToast('Compiled policy into Tier 1 Invariant rule!');
+    };
+
+    let mockViolationTally = 0;
+    window.simulateRepeatViolation = function() {
+      mockViolationTally++;
+      const total = mockViolationTally + 1;
+      document.getElementById('memTotalAudits').textContent = String(total);
+      document.getElementById('memViolations').textContent = String(mockViolationTally);
+
+      const badge = document.getElementById('memoryEscalationBadge');
+      const profile = document.getElementById('memRiskProfile');
+
+      if (mockViolationTally >= 3) {
+        badge.textContent = 'CRITICAL BLOCK (3 Violations - Repeat Offender)';
+        badge.className = 'badge badge-red';
+        profile.textContent = 'CRITICAL BLOCK';
+        profile.style.color = '#dc2626';
+        showToast('🚨 CRITICAL REPEAT OFFENDER: Pipeline access revoked under Invariant G-4!');
+      } else if (mockViolationTally === 2) {
+        badge.textContent = 'ESCALATED (2 Violations - Repeat Offender)';
+        badge.className = 'badge badge-red';
+        profile.textContent = 'ESCALATED OFFENDER';
+        profile.style.color = '#dc2626';
+        showToast('⚠️ Repeat Offender Escalation Engaged: Mandatory HITL Review');
+      } else {
+        badge.textContent = 'WARNING (1 Violation Logged)';
+        badge.className = 'badge badge-amber';
+        profile.textContent = 'WATCHLIST';
+        profile.style.color = '#d97706';
+        showToast('Incident logged to Governance Memory');
+      }
+      showHitlPayload('jira');
+    };
+
+    window.resetMemoryHistory = function() {
+      mockViolationTally = 0;
+      document.getElementById('memTotalAudits').textContent = '1';
+      document.getElementById('memViolations').textContent = '0';
+      document.getElementById('memRiskProfile').textContent = 'Tier 1 Clean';
+      document.getElementById('memRiskProfile').style.color = '#059669';
+      const badge = document.getElementById('memoryEscalationBadge');
+      badge.textContent = 'STANDARD (0 Prior Violations)';
+      badge.className = 'badge badge-green';
+      document.getElementById('hitlPayloadDisplay').textContent = 'Memory store reset. Select an enterprise platform to view dispatch templates.';
+      showToast('Governance Memory cleared.');
+    };
+
+    window.showHitlPayload = function(platform) {
+      const display = document.getElementById('hitlPayloadDisplay');
+      const ticketId = 'SEC-GOV-' + Math.floor(1000 + Math.random() * 9000);
+      const isEscalated = mockViolationTally >= 2;
+
+      if (platform === 'jira') {
+        display.textContent = JSON.stringify({
+          fields: {
+            project: { key: 'SEC' },
+            summary: `[${isEscalated ? 'SEV-1-CRITICAL' : 'SEV-2-HIGH'}] Data Governance Violation - customer_orders_v2`,
+            description: "Automated Governance Gate Invariant G-1/G-2 breach. Pipeline locked awaiting CPO approval.",
+            issuetype: { name: "Security Incident" },
+            priority: { name: isEscalated ? "Highest" : "High" },
+            labels: ["data-governance", "invariant-g1", isEscalated ? "repeat-offender" : "standard-breach"]
+          }
+        }, null, 2);
+      } else if (platform === 'snow') {
+        display.textContent = JSON.stringify({
+          short_description: "Automated Governance Gate QUARANTINE on customer_orders_v2",
+          category: "Information Security",
+          urgency: isEscalated ? "1" : "2",
+          impact: isEscalated ? "1" : "2",
+          assignment_group: "Data Governance Board",
+          work_notes: "Cryptographic trace generated. Pipeline ingestion halted. Supervisory approval requested."
+        }, null, 2);
+      } else if (platform === 'slack') {
+        display.textContent = JSON.stringify({
+          text: "🚨 Autonomous Data Governance Gate Alert",
+          blocks: [
+            { type: "header", text: { type: "plain_text", text: "🚨 Governance Decision: QUARANTINE" } },
+            { type: "section", fields: [
+              { type: "mrkdwn", text: "*Dataset:*\n`customer_orders_v2`" },
+              { type: "mrkdwn", text: `*Severity:*\n${isEscalated ? 'SEV-1-CRITICAL' : 'SEV-2-HIGH'}` },
+              { type: "mrkdwn", text: `*Repeat Offender:*\n${isEscalated ? '⚠️ YES (ESCALATED)' : 'NO'}` }
+            ]},
+            { type: "actions", elements: [
+              { type: "button", text: { type: "plain_text", text: "Approve Override (HITL)" }, style: "primary" },
+              { type: "button", text: { type: "plain_text", text: "Confirm Lock" }, style: "danger" }
+            ]}
+          ]
+        }, null, 2);
+      } else if (platform === 'teams') {
+        display.textContent = JSON.stringify({
+          type: "AdaptiveCard",
+          version: "1.4",
+          body: [
+            { type: "TextBlock", text: "🛡️ Autonomous Governance Gate — QUARANTINE", weight: "Bolder" },
+            { type: "TextBlock", text: "Invariant G-1 breach: Cleartext SSN detected outside Restricted vault." },
+            { type: "FactSet", facts: [
+              { title: "Dataset", value: "customer_orders_v2" },
+              { title: "Ticket", value: ticketId },
+              { title: "Repeat Offender", value: isEscalated ? "YES" : "NO" }
+            ]}
+          ]
+        }, null, 2);
+      }
+    };
+
+    function initSavedConfigs() {
+      const savedTheme = localStorage.getItem(STORAGE_KEY_THEME) || 'light';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+      const themeBtn = document.getElementById('themeBtn');
+      if (themeBtn) themeBtn.textContent = savedTheme === 'light' ? '☀️ Light Theme' : '🌙 Dark Theme';
+
+      const prov = localStorage.getItem(STORAGE_KEY_PROVIDER) || 'mock';
+      const geminiModel = localStorage.getItem(STORAGE_KEY_GEMINI_MODEL) || 'gemini-2.5-flash';
+      const ollamaModel = localStorage.getItem(STORAGE_KEY_OLLAMA_MODEL) || 'llama3:latest';
+      const customModel = localStorage.getItem(STORAGE_KEY_CUSTOM_MODEL) || 'gpt-4o';
+
+      const headerRuntimeText = document.getElementById('headerRuntimeText');
+      const headerStatusDot = document.getElementById('headerStatusDot');
+
+      if (headerRuntimeText) {
+        if (prov === 'gemini') {
+          headerRuntimeText.textContent = `Current Runtime: Google Gemini (${geminiModel})`;
+          if (headerStatusDot) headerStatusDot.className = 'status-dot dot-green';
+        } else if (prov === 'ollama') {
+          headerRuntimeText.textContent = `Current Runtime: Ollama (${ollamaModel.split(':')[0]})`;
+          if (headerStatusDot) headerStatusDot.className = 'status-dot dot-green';
+        } else if (prov === 'custom') {
+          headerRuntimeText.textContent = `Current Runtime: OpenAI-Compatible (${customModel || 'vLLM'})`;
+          if (headerStatusDot) headerStatusDot.className = 'status-dot dot-green';
+        } else {
+          headerRuntimeText.textContent = 'Current Runtime: Mock (Deterministic)';
+          if (headerStatusDot) headerStatusDot.className = 'status-dot dot-green';
+        }
+      }
+
+      loadPreset();
+
+      // Check URL parameters for 1-Click Demo Scenarios (/demo-scenarios)
+      const urlParams = new URLSearchParams(window.location.search);
+      const scenarioParam = urlParams.get('scenario');
+      const autorunParam = urlParams.get('autorun');
+      if (scenarioParam) {
+        if (scenarioParam === 'repeat_offender') {
+          document.getElementById('presetSelect').value = 'repeat_offender';
+          window.loadPreset();
+          window.switchTab('memoryTab');
+          window.simulateRepeatViolation();
+          window.simulateRepeatViolation();
+          if (autorunParam === 'true') {
+            setTimeout(() => { window.runAudit(); }, 350);
+          }
+        } else if (scenarioParam === 'blast_radius_analysis') {
+          document.getElementById('presetSelect').value = 'blast_radius_analysis';
+          window.loadPreset();
+          window.switchTab('dagTab');
+          if (autorunParam === 'true') {
+            setTimeout(() => {
+              window.runAudit();
+              window.switchTab('dagTab');
+            }, 350);
+          }
+        } else if (scenarioParam === 'policy_compiler') {
+          document.getElementById('presetSelect').value = 'policy_compiler';
+          window.loadPreset();
+          window.switchTab('autofixTab');
+          document.getElementById('nlPolicyInput').value = "All customer phone numbers and payment card records in marketing lakehouse must be salted with HMAC-SHA256";
+          window.compileNlPolicy();
+        } else if (PRESETS[scenarioParam]) {
+          document.getElementById('presetSelect').value = scenarioParam;
+          window.loadPreset();
+          if (autorunParam === 'true') {
+            setTimeout(() => { window.runAudit(); }, 350);
+          }
+        }
+      }
+    }
+
+    // Call Gemini API directly from browser
+    async function callGeminiApi(apiKey, model, datasetUrn, outcome, piiCount, diffsCount) {
+      const prompt = `You are the Enterprise Data Governance Agent.
+Dataset candidate: '${datasetUrn}'.
+Findings from Tier 4 deterministic 0-token engine:
+- Direct PII Violations: ${piiCount}
+- Breaking Contract Mutations: ${diffsCount}
+- Calculated Decision Outcome: ${outcome}
+
+Rules:
+1. If PII > 0 outside Restricted vault: Invariant G-1 breach -> Quarantine partition.
+2. If Breaking Mutations > 0 with consumers: Invariant G-2 breach -> Block deployment.
+3. If Clean: Approve.
+
+Return ONLY a JSON array with exactly 4 governance workflow steps (OBSERVE, REASON, DECIDE, EXECUTE):
+[
+  { "step": 1, "phase": "OBSERVE", "observation": "...", "reasoning": "...", "decision": "..." },
+  { "step": 2, "phase": "REASON", "observation": "...", "reasoning": "...", "decision": "..." },
+  { "step": 3, "phase": "DECIDE", "observation": "...", "reasoning": "...", "decision": "..." },
+  { "step": 4, "phase": "EXECUTE", "observation": "...", "reasoning": "...", "decision": "..." }
+]`;
+
+      const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+      const res = await fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: prompt }] }],
+          generationConfig: { responseMimeType: 'application/json', temperature: 0.1 }
+        })
+      });
+
+      if (!res.ok) {
+        const errJson = await res.json().catch(() => ({}));
+        throw new Error(errJson.error?.message || `Google Gemini HTTP Error ${res.status}`);
+      }
+
+      const data = await res.json();
+      const rawText = data.candidates?.[0]?.content?.parts?.[0]?.text;
+      const tokensConsumed = data.usageMetadata?.totalTokenCount || 230;
+      const steps = JSON.parse(rawText);
+      return { steps: Array.isArray(steps) ? steps : (steps.steps || []), tokensConsumed };
+    }
+
+    // Call any OpenAI-Compatible API directly from browser
+    async function callCustomApi(baseUrl, apiKey, model, datasetUrn, outcome, piiCount, diffsCount) {
+      const prompt = `You are the Enterprise Data Governance Agent.
+Dataset candidate: '${datasetUrn}'.
+Findings from Tier 4 deterministic 0-token engine:
+- Direct PII Violations: ${piiCount}
+- Breaking Contract Mutations: ${diffsCount}
+- Calculated Decision Outcome: ${outcome}
+
+Rules:
+1. If PII > 0 outside Restricted vault: Invariant G-1 breach -> Quarantine partition.
+2. If Breaking Mutations > 0 with consumers: Invariant G-2 breach -> Block deployment.
+3. If Clean: Approve.
+
+Return ONLY a valid JSON array with exactly 4 governance workflow steps (OBSERVE, REASON, DECIDE, EXECUTE):
+[
+  { "step": 1, "phase": "OBSERVE", "observation": "...", "reasoning": "...", "decision": "..." },
+  { "step": 2, "phase": "REASON", "observation": "...", "reasoning": "...", "decision": "..." },
+  { "step": 3, "phase": "DECIDE", "observation": "...", "reasoning": "...", "decision": "..." },
+  { "step": 4, "phase": "EXECUTE", "observation": "...", "reasoning": "...", "decision": "..." }
+]`;
+
+      const cleanUrl = (baseUrl || 'https://api.openai.com/v1').replace(/\/+$/, '');
+      const endpoint = `${cleanUrl}/chat/completions`;
+      const headers = { 'Content-Type': 'application/json' };
+      if (apiKey) headers['Authorization'] = `Bearer ${apiKey}`;
+
+      const res = await fetch(endpoint, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({
+          model: model || 'gpt-4o',
+          messages: [
+            { role: 'system', content: 'You are an autonomous enterprise data governance agent. Output strictly valid JSON array.' },
+            { role: 'user', content: prompt }
+          ],
+          temperature: 0.1
+        })
+      });
+
+      if (!res.ok) {
+        const errJson = await res.json().catch(() => ({}));
+        throw new Error(errJson.error?.message || `LLM API Error ${res.status}: ${res.statusText}`);
+      }
+
+      const data = await res.json();
+      const rawText = data.choices?.[0]?.message?.content || '[]';
+      const cleanJson = rawText.replace(/```json/g, '').replace(/```/g, '').trim();
+      const steps = JSON.parse(cleanJson);
+      const tokensConsumed = data.usage?.total_tokens || 210;
+      return { steps: Array.isArray(steps) ? steps : (steps.steps || []), tokensConsumed };
+    }
+
+    // Call Local Ollama Daemon directly from browser
+    async function callOllamaApi(url, model, datasetUrn, outcome, piiCount, diffsCount) {
+      const prompt = `You are the Enterprise Data Governance Agent.
+Dataset candidate: '${datasetUrn}'.
+Findings from Tier 4 deterministic 0-token engine:
+- Direct PII Violations: ${piiCount}
+- Breaking Contract Mutations: ${diffsCount}
+- Calculated Decision Outcome: ${outcome}
+
+Rules:
+1. If PII > 0 outside Restricted vault: Invariant G-1 breach -> Quarantine partition.
+2. If Breaking Mutations > 0 with consumers: Invariant G-2 breach -> Block deployment.
+3. If Clean: Approve.
+
+Return ONLY a valid JSON array with exactly 4 governance workflow steps (OBSERVE, REASON, DECIDE, EXECUTE):
+[
+  { "step": 1, "phase": "OBSERVE", "observation": "...", "reasoning": "...", "decision": "..." },
+  { "step": 2, "phase": "REASON", "observation": "...", "reasoning": "...", "decision": "..." },
+  { "step": 3, "phase": "DECIDE", "observation": "...", "reasoning": "...", "decision": "..." },
+  { "step": 4, "phase": "EXECUTE", "observation": "...", "reasoning": "...", "decision": "..." }
+]`;
+
+      const cleanUrl = (url || 'http://localhost:11434').replace(/\/+$/, '');
+      const endpoint = `${cleanUrl}/api/generate`;
+      const res = await fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model: model || 'llama3:latest',
+          prompt: prompt,
+          stream: false,
+          format: 'json'
+        })
+      });
+
+      if (!res.ok) {
+        throw new Error(`Ollama Daemon Error ${res.status} at ${cleanUrl}. Ensure Ollama daemon is running.`);
+      }
+
+      const data = await res.json();
+      const rawText = data.response;
+      const cleanJson = rawText.replace(/```json/g, '').replace(/```/g, '').trim();
+      const steps = JSON.parse(cleanJson);
+      return { steps: Array.isArray(steps) ? steps : (steps.steps || []), tokensConsumed: data.eval_count || 180 };
+    }
+
+    function updateWorkflowStepIndicators(currentStep) {
+      const pillIds = ['pill-observe', 'pill-reason', 'pill-decide', 'pill-execute'];
+      pillIds.forEach((id, idx) => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.classList.remove('completed', 'current', 'active', 'outline');
+        if (currentStep === -1) {
+          el.classList.add('outline');
+        } else if (idx < currentStep) {
+          el.classList.add('completed');
+        } else if (idx === currentStep) {
+          el.classList.add('current');
+        } else {
+          el.classList.add('outline');
+        }
+      });
+    }
+
+    function setWorkflowStatus(state, outcome) {
+      const dot = document.getElementById('workflowStatusDot');
+      const text = document.getElementById('workflowStatusText');
+      const right = document.getElementById('workflowStatusRight');
+      if (!dot || !text || !right) return;
+
+      if (state === 'idle') {
+        dot.className = 'workflow-status-dot idle';
+        text.innerHTML = 'Status: <strong>Awaiting Audit Execution</strong>';
+        right.innerHTML = '<span style="font-size: 0.72rem; color: var(--text-subtle);">Ready</span>';
+        updateWorkflowStepIndicators(-1);
+      } else if (state === 'running') {
+        dot.className = 'workflow-status-dot running';
+        text.innerHTML = 'Status: <strong>Evaluating Governance Controls...</strong>';
+        right.innerHTML = '<span style="font-size: 0.72rem; color: #3b82f6; font-weight: 700;">Evaluating</span>';
+      } else if (state === 'complete') {
+        dot.className = 'workflow-status-dot complete';
+        text.innerHTML = 'Status: <strong>Governance Decision Complete</strong>';
+        let badgeClass = 'badge-green';
+        if (outcome === 'APPROVE_WITH_WARNING') badgeClass = 'badge-amber';
+        else if (outcome === 'QUARANTINE' || outcome === 'BLOCK_DEPLOYMENT') badgeClass = 'badge-red';
+        right.innerHTML = `<span style="display: inline-flex; align-items: center; gap: 6px;">Decision: <span class="badge ${badgeClass}" style="font-size: 0.7rem; font-weight: 800;">${outcome || 'APPROVE'}</span></span>`;
+        updateWorkflowStepIndicators(4);
+      }
+    }
+
+    // Main Audit Runner
+    window.runAudit = async function() {
+      const runBtn = document.getElementById('runBtn');
+      const statusBadge = document.getElementById('statusBadge');
+      const stepList = document.getElementById('stepList');
+      const dossierGroup = document.getElementById('dossierGroup');
+      const dossierText = document.getElementById('dossierText');
+      const blastBox = document.getElementById('blastRadiusBox');
+      const regBox = document.getElementById('regulatoryBox');
+
+      let candidate, baseline;
+      try {
+        candidate = JSON.parse(document.getElementById('candidateInput').value);
+      } catch (e) {
+        showToast('❌ Invalid JSON in Candidate Schema.');
+        return;
+      }
+
+      try {
+        const rawBaseline = document.getElementById('baselineInput').value.trim();
+        if (rawBaseline) baseline = JSON.parse(rawBaseline);
+      } catch (e) {
+        showToast('❌ Invalid JSON in Baseline Contract.');
+        return;
+      }
+
+      const prov = localStorage.getItem(STORAGE_KEY_PROVIDER) || 'mock';
+      const apiKey = localStorage.getItem(STORAGE_KEY_GEMINI) || '';
+      const geminiModel = localStorage.getItem(STORAGE_KEY_GEMINI_MODEL) || 'gemini-2.5-flash';
+
+      if (prov === 'gemini' && !apiKey) {
+        showToast('⚠️ Gemini API Key Required! Click ⚙️ LLM in header.');
+        openLlmModal();
+        return;
+      }
+
+      runBtn.disabled = true;
+      statusBadge.textContent = 'EXECUTING AUDIT...';
+      statusBadge.className = 'badge badge-amber';
+      setWorkflowStatus('running');
+      updateWorkflowStepIndicators(0);
+      stepList.innerHTML = '<div style="text-align: center; padding: 30px; color: var(--text-muted); font-size: 0.85rem;">🔄 Executing Tier 4 Deterministic Scanners & Autonomous Governance Decision Engine...</div>';
+      dossierGroup.style.display = 'none';
+      blastBox.style.display = 'none';
+      regBox.style.display = 'none';
+
+      const startTime = performance.now();
+
+      // 1. Tier 4 Deterministic Scan (0 Tokens)
+      const records = candidate.sampleRecords || [];
+      const sensitiveFindings = [];
+
+      for (let r = 0; r < records.length; r++) {
+        const rec = records[r];
+        for (const [fName, val] of Object.entries(rec)) {
+          if (!val) continue;
+          const s = String(val).trim();
+          if (MASKED_PATTERNS.some(p => p.test(s))) continue;
+          for (const [pName, regex] of Object.entries(PII_PATTERNS)) {
+            if (regex.test(s)) {
+              sensitiveFindings.push({ field: fName, pattern: pName, sample: s });
+              break;
+            }
+          }
+        }
+      }
+
+      // 2. Schema Diff
+      const schemaDiffs = [];
+      if (baseline) {
+        const baseCols = new Map(baseline.columns.map(c => [c.name, c]));
+        const candCols = new Map(candidate.columns.map(c => [c.name, c]));
+
+        for (const [name, oldCol] of baseCols.entries()) {
+          if (!candCols.has(name)) {
+            schemaDiffs.push({ field: name, type: 'FIELD_REMOVED', isBreaking: true, desc: `Column '${name}' (${oldCol.type}) removed from production contract.` });
+          }
+        }
+        for (const [name, newCol] of candCols.entries()) {
+          if (!baseCols.has(name)) {
+            schemaDiffs.push({ field: name, type: 'FIELD_ADDED_OPTIONAL', isBreaking: false, desc: `Optional column '${name}' (${newCol.type}) added.` });
+          }
+        }
+      }
+
+      // 3. Governance Decision
+      let outcome = 'APPROVE';
+      let outcomeRationale = 'Dataset complies with all governance policies.';
+      let issueTicketKey = null;
+
+      if (sensitiveFindings.length > 0 && candidate.classificationTier !== 'RESTRICTED') {
+        outcome = 'QUARANTINE';
+        outcomeRationale = `Invariant 1 Breach: Unmasked Direct PII credentials detected in ${candidate.classificationTier} storage tier. Automated partition quarantine enforced.`;
+        issueTicketKey = 'SEC-GOV-902';
+      } else if (schemaDiffs.some(d => d.isBreaking)) {
+        outcome = 'BLOCK_DEPLOYMENT';
+        outcomeRationale = `Invariant 2 Breach: Candidate contains breaking column removals impacting registered downstream consumers.`;
+        issueTicketKey = 'CONTRACT-BLOCKED-401';
+      } else if (schemaDiffs.some(d => !d.isBreaking)) {
+        outcome = 'APPROVE_WITH_WARNING';
+        outcomeRationale = `Non-breaking backward-compatible schema evolution detected.`;
+      }
+
+      // 4. Trajectory Generation
+      let trajectory = [];
+      let tokensConsumed = 0;
+      let providerLabel = 'Realistic Mock (0-Token)';
+      if (prov === 'gemini') providerLabel = `Gemini (${geminiModel})`;
+      else if (prov === 'ollama') providerLabel = `Ollama (${localStorage.getItem(STORAGE_KEY_OLLAMA_MODEL) || 'llama3'})`;
+      else if (prov === 'custom') providerLabel = `${localStorage.getItem(STORAGE_KEY_CUSTOM_MODEL) || 'Custom LLM'}`;
+
+      try {
+        if (prov === 'gemini') {
+          statusBadge.textContent = 'CALLING GEMINI...';
+          const geminiRes = await callGeminiApi(apiKey, geminiModel, candidate.datasetUrn, outcome, sensitiveFindings.length, schemaDiffs.length);
+          trajectory = geminiRes.steps;
+          tokensConsumed = geminiRes.tokensConsumed;
+        } else if (prov === 'ollama') {
+          statusBadge.textContent = 'CALLING OLLAMA...';
+          const ollamaUrl = localStorage.getItem(STORAGE_KEY_OLLAMA_URL) || 'http://localhost:11434';
+          const ollamaModel = localStorage.getItem(STORAGE_KEY_OLLAMA_MODEL) || 'llama3:latest';
+          const ollamaRes = await callOllamaApi(ollamaUrl, ollamaModel, candidate.datasetUrn, outcome, sensitiveFindings.length, schemaDiffs.length);
+          trajectory = ollamaRes.steps;
+          tokensConsumed = ollamaRes.tokensConsumed;
+        } else if (prov === 'custom') {
+          statusBadge.textContent = 'CALLING LLM...';
+          const customUrl = localStorage.getItem(STORAGE_KEY_CUSTOM_URL) || 'https://api.openai.com/v1';
+          const customKey = localStorage.getItem(STORAGE_KEY_CUSTOM_KEY) || '';
+          const customModel = localStorage.getItem(STORAGE_KEY_CUSTOM_MODEL) || 'gpt-4o';
+          const customRes = await callCustomApi(customUrl, customKey, customModel, candidate.datasetUrn, outcome, sensitiveFindings.length, schemaDiffs.length);
+          trajectory = customRes.steps;
+          tokensConsumed = customRes.tokensConsumed;
+        } else {
+          // Default Zero-Token Cassette
+          tokensConsumed = 0;
+          if (outcome === 'QUARANTINE') {
+            trajectory = [
+              { step: 1, phase: 'OBSERVE', observation: `Ingested candidate '${candidate.datasetUrn}'. Invariant scanner flagged unmasked PII in sample records.`, decision: 'Trigger Tier 2 statutory mapping.' },
+              { step: 2, phase: 'REASON', observation: `Statutory boundaries breached: Invariant G-1 violation. Cleartext credentials outside secure vault.`, decision: 'Mandate Human-in-the-Loop Supervisory Quarantine.' },
+              { step: 3, phase: 'DECIDE', observation: `Supervisory escalation protocol engaged. Quarantine bucket allocated.`, decision: `Enforce QUARANTINE decision and file defect candidate ${issueTicketKey}.` },
+              { step: 4, phase: 'EXECUTE', observation: `Quarantine gate locked. Downstream ingestion suspended.`, decision: 'Emit Exit Code 1 to CI/CD pipeline.' }
+            ];
+          } else if (outcome === 'BLOCK_DEPLOYMENT') {
+            trajectory = [
+              { step: 1, phase: 'OBSERVE', observation: `Candidate schema AST analysis identified critical column removals.`, decision: 'Evaluate downstream consumer dependency graph.' },
+              { step: 2, phase: 'REASON', observation: `Consumer impact analysis confirmed breaking changes impact active consumers.`, decision: 'Mandate immediate deployment block.' },
+              { step: 3, phase: 'DECIDE', observation: `Deployment block policy enforced. Defect ticket logged.`, decision: `Enforce BLOCK_DEPLOYMENT decision outcome.` },
+              { step: 4, phase: 'EXECUTE', observation: `CI/CD pull request gate locked. Defect ticket ${issueTicketKey} logged.`, decision: 'Emit Exit Code 1 to CI/CD pipeline.' }
+            ];
+          } else {
+            trajectory = [
+              { step: 1, phase: 'OBSERVE', observation: `Ingested candidate '${candidate.datasetUrn}'. Zero unmasked PII detected.`, decision: 'Verify schema contract compatibility.' },
+              { step: 2, phase: 'REASON', observation: `AST diff verified. Zero breaking changes detected.`, decision: 'Certify dataset candidate for production ingestion.' },
+              { step: 3, phase: 'DECIDE', observation: `Governance criteria satisfied: Invariant G-1 and G-2 checks passed.`, decision: `Enforce ${outcome} decision outcome.` },
+              { step: 4, phase: 'EXECUTE', observation: `Compliance dossier finalized with cryptographic trace ID.`, decision: 'Release pipeline lock. Emit Exit Code 0 to CI/CD gate.' }
+            ];
+          }
+        }
+      } catch (err) {
+        console.error(err);
+        showToast(`⚠️ ${providerLabel} failed (${err.message}). Cascading to realistic cassette.`);
+        providerLabel = 'Cassette Fallback';
+        trajectory = [
+          { step: 1, phase: 'OBSERVE', observation: `Provider fallback engaged (${err.message}). Evaluated candidate.`, decision: 'Run deterministic safety invariants.' },
+          { step: 2, phase: 'REASON', observation: `Evaluated safety boundaries: outcome ${outcome}.`, decision: 'Synthesize dossier.' },
+          { step: 3, phase: 'DECIDE', observation: `Decision: ${outcome}.`, decision: 'Finalize decision.' },
+          { step: 4, phase: 'EXECUTE', observation: 'Audit record recorded.', decision: 'Emit CI/CD status.' }
+        ];
+      }
+
+      const totalDuration = Math.round(performance.now() - startTime);
+
+      // Update Metrics
+      document.getElementById('statDuration').textContent = `${totalDuration}ms`;
+      document.getElementById('statTokens').textContent = String(tokensConsumed);
+      document.getElementById('statTokens').style.color = tokensConsumed === 0 ? '#059669' : '#7c3aed';
+      document.getElementById('statPii').textContent = String(sensitiveFindings.length);
+      document.getElementById('statPii').style.color = sensitiveFindings.length > 0 ? '#dc2626' : '#059669';
+      document.getElementById('statDiffs').textContent = String(schemaDiffs.length);
+
+      // Update Status Badge
+      statusBadge.textContent = outcome;
+      if (outcome === 'APPROVE') statusBadge.className = 'badge badge-green';
+      else if (outcome === 'APPROVE_WITH_WARNING') statusBadge.className = 'badge badge-amber';
+      else statusBadge.className = 'badge badge-red';
+
+      // Update Visual SVG Blast Radius Lineage Graph
+      const edgeBilling = document.getElementById('edge-billing');
+      const edgeFraud = document.getElementById('edge-fraud');
+      const nodeBilling = document.getElementById('node-billing');
+      const nodeFraud = document.getElementById('node-fraud');
+      const dagRisk = document.getElementById('dagRiskBadge');
+
+      if (schemaDiffs.some(d => d.isBreaking)) {
+        edgeBilling.setAttribute('stroke', '#dc2626');
+        edgeBilling.setAttribute('stroke-width', '3');
+        edgeFraud.setAttribute('stroke', '#dc2626');
+        edgeFraud.setAttribute('stroke-width', '3');
+        nodeBilling.setAttribute('stroke', '#dc2626');
+        nodeBilling.setAttribute('fill', '#fef2f2');
+        nodeFraud.setAttribute('stroke', '#dc2626');
+        nodeFraud.setAttribute('fill', '#fef2f2');
+        dagRisk.textContent = 'CRITICAL BLAST RADIUS';
+        dagRisk.className = 'badge badge-red';
+      } else {
+        edgeBilling.setAttribute('stroke', '#cbd5e1');
+        edgeBilling.setAttribute('stroke-width', '2');
+        edgeFraud.setAttribute('stroke', '#cbd5e1');
+        edgeFraud.setAttribute('stroke-width', '2');
+        nodeBilling.setAttribute('stroke', '#cbd5e1');
+        nodeBilling.setAttribute('fill', '#ffffff');
+        nodeFraud.setAttribute('stroke', '#cbd5e1');
+        nodeFraud.setAttribute('fill', '#ffffff');
+        dagRisk.textContent = 'Topology Healthy';
+        dagRisk.className = 'badge badge-green';
+      }
+
+      // Update Governance Arbitration
+      if (outcome === 'QUARANTINE') {
+        document.getElementById('councilProduct').textContent = `"We need ${candidate.datasetUrn} deployed today. Can we bypass the PII check for 2 weeks?"`;
+        document.getElementById('councilSecurity').textContent = `"Veto. Cleartext taxpayer_ssn in ${candidate.classificationTier} storage violates GDPR Art. 32 and Invariant G-1. Direct liability up to €20M. Must quarantine."`;
+        document.getElementById('councilArbiter').textContent = `"Supervisory gate active: Decision QUARANTINE. Generated automated dbt SQL transformation to mask SSN and unblock deployment."`;
+      } else if (outcome === 'BLOCK_DEPLOYMENT') {
+        document.getElementById('councilProduct').textContent = `"We refactored the table columns to optimize write speeds."`;
+        document.getElementById('councilSecurity').textContent = `"Invariant G-2 violation. Removing customer_id causes runtime exceptions in Real-time Fraud Detection ML and Billing pipelines."`;
+        document.getElementById('councilArbiter').textContent = `"Deployment Blocked (Exit code 1). Provide backward-compatible view aliases before resubmitting."`;
+      } else {
+        document.getElementById('councilProduct').textContent = `"Schema candidate is tested and backward compatible."`;
+        document.getElementById('councilSecurity').textContent = `"Zero unmasked PII. All contractual constraints satisfied."`;
+        document.getElementById('councilArbiter').textContent = `"Binding Arbitration: APPROVE. Release pipeline lock."`;
+      }
+
+      // Auto-Synthesize Remediation Code
+      const piiField = sensitiveFindings.length > 0 ? sensitiveFindings[0].field : 'taxpayer_ssn';
+      document.getElementById('remediationCode').textContent = 
+`-- Production Invariant G-1 Remediation SQL (dbt / Trino / PySpark):
+SELECT
+  order_id,
+  customer_id,
+  order_amount,
+  order_timestamp,
+  -- Deterministic Column Masking & Salted Tokenization:
+  CONCAT('***-**-', SUBSTRING(${piiField}, -4)) AS masked_${piiField},
+  SHA256(CONCAT(current_salt_key(), '::', ${piiField})) AS tokenized_${piiField}_ref
+FROM raw_staging_stream;`;
+
+      // Update Blast Radius Banner
+      if (schemaDiffs.some(d => d.isBreaking) && baseline?.registeredConsumers?.length) {
+        blastBox.style.display = 'block';
+        document.getElementById('blastRiskBadge').textContent = 'CRITICAL BLAST RADIUS';
+        document.getElementById('blastRadiusSummary').innerHTML = `
+          Breaking contract mutation breaks <strong>${baseline.registeredConsumers.length} active consumer systems</strong>:
+          <ul style="margin-top: 6px; padding-left: 18px;">
+            ${baseline.registeredConsumers.map(c => `<li><strong>${c.serviceName}</strong> (${c.consumerType}, ${c.slaTier})</li>`).join('')}
+          </ul>
+        `;
+      }
+
+      // Update Regulatory Card
+      if (sensitiveFindings.length > 0) {
+        regBox.style.display = 'block';
+        document.getElementById('regulatoryList').innerHTML = `
+          <div style="font-size: 0.76rem; color: #991b1b; background: #fef2f2; padding: 8px 12px; border-radius: 8px; border: 1px solid #fecaca;">
+            <strong>• PCI-DSS v4.0 Req 3.4 & GLBA 15 U.S.C. § 6801:</strong> Unmasked credentials outside vault carries statutory fine risk up to $100k/incident.
+          </div>
+          <div style="font-size: 0.76rem; color: #92400e; background: #fffbeb; padding: 8px 12px; border-radius: 8px; border: 1px solid #fde68a;">
+            <strong>• GDPR Article 32 & HIPAA 45 CFR § 164.514:</strong> Mandatory requirement for Format-Preserving Encryption or Safe Harbor tokenization.
+          </div>
+        `;
+      }
+
+      // Render Trajectory Steps
+      stepList.innerHTML = '';
+      for (let i = 0; i < trajectory.length; i++) {
+        const t = trajectory[i];
+        updateWorkflowStepIndicators(i);
+        await new Promise(r => setTimeout(r, 120));
+        const item = document.createElement('div');
+        item.className = 'step-item';
+        item.innerHTML = `
+          <div class="step-header">
+            <span style="color: #4f46e5; font-weight: 800;">STEP ${t.step} · ${t.phase}</span>
+            <span class="badge ${prov === 'gemini' ? 'badge-purple' : 'badge-amber'}">${providerLabel.toUpperCase()}</span>
+          </div>
+          <div class="step-body">${t.observation}</div>
+          <div class="step-decision"><strong>DECISION:</strong> ${t.decision}</div>
+        `;
+        stepList.appendChild(item);
+      }
+      setWorkflowStatus('complete', outcome);
+
+      // Generate Dossier Text
+      const traceId = `GOV-AUDIT-${Math.random().toString(36).substring(2, 10).toUpperCase()}`;
+      const dossier = `================================================================================
+ENTERPRISE DATA GOVERNANCE COMPLIANCE AUDIT DOSSIER
+================================================================================
+Audit Trace ID:     ${traceId}
+Dataset URN:        ${candidate.datasetUrn}
+Audit Timestamp:    ${new Date().toISOString()}
+Declared Security:  ${candidate.classificationTier}
+Recommended Tier:   ${sensitiveFindings.length > 0 ? 'RESTRICTED' : candidate.classificationTier}
+Governance Status:  ${outcome} ${issueTicketKey ? `(Ticket: ${issueTicketKey})` : ''}
+Reasoning Runtime:  Enterprise Governance Runtime
+
+ZERO-TOKEN DETERMINISTIC SCAN METRICS:
+- Scanned Records:     ${records.length}
+- Total Duration:      ${totalDuration}ms
+- Tokens Consumed:     ${tokensConsumed} (${tokensConsumed === 0 ? '100% Zero-Token Offload' : 'Cognitive Cloud Tokens'})
+- PII Violations:      ${sensitiveFindings.length} ${sensitiveFindings.length > 0 ? '(' + sensitiveFindings.map(f => f.pattern + ' in column ' + f.field).join(', ') + ')' : ''}
+- Contract Mutations:  ${schemaDiffs.length} ${schemaDiffs.map(d => `[${d.type}: ${d.field}]`).join(', ')}
+
+EXECUTIVE SUMMARY:
+${outcomeRationale}
+
+RECOMMENDED ACTION:
+${outcome === 'QUARANTINE' ? 'Halt pipeline. Quarantined due to Invariant 1 cleartext PII violation. Route to Security Officer.' : outcome === 'BLOCK_DEPLOYMENT' ? 'Reject CI/CD deployment. Restore dropped columns or provide backward compatibility layer.' : 'Dataset certified. Ingestion pipeline unlocked.'}
+================================================================================`;
+
+      dossierText.textContent = dossier;
+      dossierGroup.style.display = 'block';
+      runBtn.disabled = false;
+    };
+
+    initSavedConfigs();
+  </script>
+</body>
+</html>

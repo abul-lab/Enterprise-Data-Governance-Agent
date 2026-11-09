@@ -1,0 +1,1124 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>📊 Executive Risk Dashboard — Enterprise Data Governance Agent</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root[data-theme="light"] {
+      --bg: #f8fafc;
+      --bg-gradient: radial-gradient(circle at 10% 20%, rgba(241, 245, 249, 1) 0%, rgba(248, 250, 252, 1) 90%);
+      --card-bg: #ffffff;
+      --card-border: #e2e8f0;
+      --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+      --text: #0f172a;
+      --text-muted: #64748b;
+      --text-subtle: #94a3b8;
+      --accent: #4f46e5;
+      --accent-glow: rgba(79, 70, 229, 0.15);
+      --accent-hover: #4338ca;
+      --success-bg: #ecfdf5;
+      --success-text: #065f46;
+      --success-border: #a7f3d0;
+      --warning-bg: #fffbeb;
+      --warning-text: #92400e;
+      --warning-border: #fde68a;
+      --danger-bg: #fef2f2;
+      --danger-text: #991b1b;
+      --danger-border: #fecaca;
+      --purple-bg: #f5f3ff;
+      --purple-text: #5b21b6;
+      --purple-border: #ddd6fe;
+      --section-box-bg: #f1f5f9;
+      --input-bg: #ffffff;
+      --input-border: #cbd5e1;
+      --input-text: #0f172a;
+    }
+    :root[data-theme="dark"] {
+      --bg: #090d16;
+      --bg-gradient: radial-gradient(circle at 50% 0%, #1e1b4b 0%, #090d16 75%);
+      --card-bg: #0f172a;
+      --card-border: #1e293b;
+      --card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-subtle: #64748b;
+      --accent: #6366f1;
+      --accent-glow: rgba(99, 102, 241, 0.25);
+      --accent-hover: #4f46e5;
+      --success-bg: rgba(6, 95, 70, 0.2);
+      --success-text: #34d399;
+      --success-border: rgba(52, 211, 153, 0.3);
+      --warning-bg: rgba(146, 64, 14, 0.2);
+      --warning-text: #fbbf24;
+      --warning-border: rgba(251, 191, 36, 0.3);
+      --danger-bg: rgba(153, 27, 27, 0.2);
+      --danger-text: #f87171;
+      --danger-border: rgba(248, 113, 113, 0.3);
+      --purple-bg: rgba(91, 33, 182, 0.2);
+      --purple-text: #c084fc;
+      --purple-border: rgba(192, 132, 252, 0.3);
+      --section-box-bg: #1e293b;
+      --input-bg: #1e293b;
+      --input-border: #334155;
+      --input-text: #f8fafc;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg);
+      background-image: var(--bg-gradient);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      padding: 24px;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    .container {
+      max-width: 1440px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    /* ==========================================================================
+       TWO-ROW ENTERPRISE HEADER (Databricks / ServiceNow / Azure / Atlassian)
+       ========================================================================== */
+    .app-header {
+      margin-bottom: 24px;
+      border-bottom: 1px solid var(--card-border);
+      width: 100%;
+    }
+
+    .header-row-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--card-border);
+      gap: 16px;
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: inherit;
+      flex-shrink: 0;
+    }
+    .brand-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #4f46e5, #7c3aed);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      box-shadow: 0 4px 10px var(--accent-glow);
+      color: white;
+      flex-shrink: 0;
+    }
+    .brand-title {
+      font-size: 1.05rem;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+      color: var(--text);
+      white-space: nowrap;
+      margin: 0;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    /* ROW 2: PRIMARY NAVIGATION */
+    .header-row-nav {
+      display: flex;
+      align-items: center;
+      padding-top: 10px;
+      padding-bottom: 10px;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin: 0;
+      padding: 0;
+      justify-content: flex-start;
+      width: 100%;
+      overflow-x: auto;
+    }
+    .nav-link {
+      text-decoration: none;
+      color: var(--text-muted);
+      font-size: 0.82rem;
+      font-weight: 700;
+      padding: 7px 14px;
+      border-radius: 8px;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+    .nav-link:hover {
+      color: var(--text);
+      background: var(--section-box-bg);
+    }
+    .nav-link.active {
+      color: var(--accent);
+      background: var(--purple-bg);
+      border: 1px solid var(--purple-border);
+    }
+    .header-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      color: var(--text);
+      padding: 5px 12px;
+      border-radius: 8px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+      transition: all 0.2s;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+    .header-btn:hover {
+      background: var(--section-box-bg);
+      border-color: var(--accent);
+      transform: translateY(-1px);
+    }
+    .header-btn.active {
+      color: var(--accent);
+      background: var(--purple-bg);
+      border-color: var(--purple-border);
+    }
+
+    .runtime-status-pill {
+      background: var(--card-bg);
+      border: 1px solid var(--purple-border);
+      color: var(--text);
+      padding: 6px 14px;
+      border-radius: 10px;
+      font-size: 0.76rem;
+      font-weight: 700;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+    .runtime-status-pill:hover {
+      background: var(--purple-bg);
+      border-color: var(--accent);
+      transform: translateY(-1px);
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+    .dot-green { background: #10b981; box-shadow: 0 0 8px #10b981; }
+    .dot-amber { background: #f59e0b; box-shadow: 0 0 8px #f59e0b; }
+    .dot-red { background: #ef4444; box-shadow: 0 0 8px #ef4444; }
+
+    /* BADGES */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      font-size: 0.68rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .badge-purple { background: var(--purple-bg); color: var(--purple-text); border: 1px solid var(--purple-border); }
+    .badge-green { background: var(--success-bg); color: var(--success-text); border: 1px solid var(--success-border); }
+    .badge-amber { background: var(--warning-bg); color: var(--warning-text); border: 1px solid var(--warning-border); }
+    .badge-red { background: var(--danger-bg); color: var(--danger-text); border: 1px solid var(--danger-border); }
+
+    /* CARD STYLES */
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: var(--card-shadow);
+      margin-bottom: 24px;
+      transition: all 0.3s;
+    }
+    .card-title {
+      font-size: 1.05rem;
+      font-weight: 800;
+      margin-bottom: 6px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: var(--text);
+    }
+    .card-subtitle {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+      line-height: 1.45;
+    }
+
+    /* 6-CARD TOP KPI STRIP */
+    .kpi-strip {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+    @media (max-width: 1200px) { .kpi-strip { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 680px) { .kpi-strip { grid-template-columns: 1fr; } }
+
+    .kpi-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 18px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      box-shadow: var(--card-shadow);
+      border-top: 3px solid var(--accent);
+    }
+    .kpi-card:nth-child(2) { border-top-color: #dc2626; }
+    .kpi-card:nth-child(3) { border-top-color: #f59e0b; }
+    .kpi-card:nth-child(4) { border-top-color: #7c3aed; }
+    .kpi-card:nth-child(5) { border-top-color: #10b981; }
+    .kpi-card:nth-child(6) { border-top-color: #059669; }
+
+    .kpi-val {
+      font-size: 1.6rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--text);
+    }
+    .kpi-lbl {
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+    }
+    .kpi-sub {
+      font-size: 0.7rem;
+      color: var(--text-subtle);
+    }
+
+    /* HEALTH SCORE & ROI BANNER */
+    .executive-header-card {
+      background: linear-gradient(135deg, #4f46e5 0%, #3730a3 100%);
+      color: white;
+      border-radius: 20px;
+      padding: 26px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+      gap: 20px;
+      box-shadow: 0 10px 25px -5px rgba(79, 70, 229, 0.4);
+    }
+    .health-gauge-box {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+    .gauge-circle {
+      width: 82px;
+      height: 82px;
+      border-radius: 50%;
+      border: 6px solid rgba(255, 255, 255, 0.25);
+      border-top-color: #34d399;
+      border-right-color: #34d399;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255, 255, 255, 0.1);
+    }
+    .gauge-score {
+      font-size: 1.7rem;
+      font-weight: 800;
+      line-height: 1;
+    }
+    .gauge-denom {
+      font-size: 0.62rem;
+      opacity: 0.8;
+      text-transform: uppercase;
+    }
+
+    /* BUTTONS */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 18px;
+      border-radius: 12px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+      border: none;
+      background: #ffffff;
+      color: #3730a3;
+      transition: all 0.2s;
+      text-decoration: none;
+    }
+    .btn:hover {
+      background: #f1f5f9;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    /* SPLIT SECTION */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+    @media (max-width: 960px) { .grid-2 { grid-template-columns: 1fr; } }
+
+    /* REGULATORY FRAMEWORK CARDS */
+    .reg-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    @media (max-width: 960px) { .reg-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 500px) { .reg-grid { grid-template-columns: 1fr; } }
+
+    .reg-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      box-shadow: var(--card-shadow);
+    }
+    .reg-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .reg-title {
+      font-size: 1.1rem;
+      font-weight: 800;
+    }
+
+    /* HEATMAP TABLE */
+    table.heatmap-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.8rem;
+      text-align: center;
+    }
+    table.heatmap-table th {
+      background: var(--section-box-bg);
+      padding: 10px 12px;
+      font-weight: 800;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--card-border);
+    }
+    table.heatmap-table td {
+      padding: 12px;
+      border-bottom: 1px solid var(--card-border);
+      font-weight: 700;
+    }
+    .heat-cell-low { background: rgba(16, 185, 129, 0.12); color: #065f46; border-radius: 8px; }
+    .heat-cell-med { background: rgba(245, 158, 11, 0.15); color: #92400e; border-radius: 8px; }
+    .heat-cell-high { background: rgba(239, 68, 68, 0.15); color: #991b1b; border-radius: 8px; }
+    .heat-cell-crit { background: rgba(220, 38, 38, 0.28); color: #7f1d1d; border-radius: 8px; }
+
+    /* TABLE */
+    .table-container {
+      overflow-x: auto;
+      border-radius: 12px;
+      border: 1px solid var(--card-border);
+      background: var(--card-bg);
+    }
+    table.data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.78rem;
+      text-align: left;
+    }
+    table.data-table th {
+      background: var(--section-box-bg);
+      padding: 12px 14px;
+      font-weight: 800;
+      text-transform: uppercase;
+      font-size: 0.68rem;
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--card-border);
+      letter-spacing: 0.04em;
+    }
+    table.data-table td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--card-border);
+      color: var(--text);
+    }
+    table.data-table tr:last-child td { border-bottom: none; }
+    table.data-table tr:hover td { background: var(--section-box-bg); }
+
+    /* PRINT MODAL */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(15, 23, 42, 0.7);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      display: none;
+    }
+    .modal-content {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 32px;
+      max-width: 780px;
+      width: 90%;
+      max-height: 85vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    }
+
+    @media print {
+      body { background: #ffffff !important; color: #0f172a !important; padding: 0 !important; }
+      .top-nav, .header-actions, .btn, .time-filter-strip, .no-print { display: none !important; }
+      .card, .executive-header-card { display: none !important; }
+      .modal-overlay {
+        position: static !important;
+        display: block !important;
+        background: none !important;
+        backdrop-filter: none !important;
+        width: 100% !important;
+        height: auto !important;
+        padding: 0 !important;
+      }
+      .modal-content {
+        max-width: 100% !important;
+        width: 100% !important;
+        border: 1px solid #cbd5e1 !important;
+        box-shadow: none !important;
+        padding: 24px !important;
+        background: #ffffff !important;
+        color: #0f172a !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- ENTERPRISE TWO-ROW HEADER (Databricks / Azure Portal / Atlassian style) -->
+    <header class="app-header">
+      <!-- ROW 1: BRAND + UTILITY CONTROLS -->
+      <div class="header-row-top">
+        <a href="index.html" class="nav-brand">
+          <div class="brand-icon">🛡️</div>
+          <div class="brand-title">Enterprise Data Governance Agent</div>
+        </a>
+        <div class="header-actions">
+          <a href="reasoning-runtime.html" class="header-btn" title="Configure LLM Reasoning Provider">🧠 LLM Config</a>
+          <span class="badge badge-purple">5-TIER GOVERNANCE</span>
+          <span class="badge badge-green">Platform Health: Excellent</span>
+          <button class="header-btn" onclick="toggleTheme()" id="themeBtn">☀️ Light Theme</button>
+        </div>
+      </div>
+
+      <!-- ROW 2: PRIMARY BUSINESS NAVIGATION (Left edge aligned with Brand Title) -->
+      <div class="header-row-nav">
+        <div class="nav-links">
+          <a href="index.html" class="nav-link">🛡️ Governance Studio</a>
+          <a href="evidence-vault.html" class="nav-link">🗄️ Evidence Vault</a>
+          <a href="executive-dashboard.html" class="nav-link active">📊 Executive Dashboard</a>
+          <a href="architecture.html" class="nav-link">🏛️ Architecture</a>
+          <a href="demo-scenarios.html" class="nav-link">🎬 Demo Scenarios</a>
+        </div>
+      </div>
+    </header>
+
+    <!-- EXECUTIVE LEADERSHIP BANNER -->
+    <div class="executive-header-card">
+      <div class="health-gauge-box">
+        <div class="gauge-circle" style="width: 84px; height: 84px; border-width: 4px;">
+          <div class="gauge-score" id="headerHealthScore" style="font-size: 2rem; font-weight: 900; line-height: 1;">94</div>
+          <div class="gauge-denom" style="font-size: 0.72rem; font-weight: 800; opacity: 0.9;">/ 100</div>
+        </div>
+        <div>
+          <div style="font-size: 0.68rem; text-transform: uppercase; font-weight: 800; letter-spacing: 0.08em; opacity: 0.85;">GOVERNANCE HEALTH SCORE</div>
+          <div style="display: flex; align-items: baseline; gap: 12px; margin: 3px 0 2px 0;">
+            <span style="font-size: 1.85rem; font-weight: 900; letter-spacing: -0.02em;">94 / 100</span>
+            <span class="badge" style="background: rgba(255,255,255,0.22); color: white; border: 1px solid rgba(255,255,255,0.4); font-size: 0.74rem; padding: 3px 12px; font-weight: 900; letter-spacing: 0.05em;">EXCELLENT</span>
+          </div>
+          <div style="font-size: 0.75rem; opacity: 0.9;">
+            Continuous autonomous telemetry across 2,184 governed enterprise lakehouse assets · 99.2% compliance rate.
+          </div>
+        </div>
+      </div>
+      <div style="display: flex; align-items: center; gap: 16px;">
+        <div style="background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.22); border-radius: 12px; padding: 10px 18px; text-align: right;">
+          <div style="font-size: 0.64rem; text-transform: uppercase; font-weight: 800; letter-spacing: 0.08em; opacity: 0.85;">FINANCIAL RISK AVOIDED</div>
+          <div style="font-size: 1.45rem; font-weight: 900; color: #a7f3d0; margin-top: 1px;">$3.42M</div>
+          <div style="font-size: 0.68rem; opacity: 0.85;">Statutory Fine Defense</div>
+        </div>
+        <button class="btn" onclick="openExecutiveReport()">
+          <span>📄 Export Board Brief (PDF)</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- 6-CARD TOP EXECUTIVE KPI STRIP -->
+    <div class="kpi-strip">
+      <div class="kpi-card">
+        <div class="kpi-lbl">Datasets Governed</div>
+        <div class="kpi-val" style="color: #4f46e5;">2,184</div>
+        <div class="kpi-sub">Lakehouse, DW &amp; Streams</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-lbl">Critical Violations Prevented</div>
+        <div class="kpi-val" style="color: #dc2626;">143</div>
+        <div class="kpi-sub">Zero unmasked PII leaks</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-lbl">Deployments Blocked</div>
+        <div class="kpi-val" style="color: #f59e0b;">37</div>
+        <div class="kpi-sub">Breaking contract mutations</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-lbl">Quarantined Assets</div>
+        <div class="kpi-val" style="color: #7c3aed;">52</div>
+        <div class="kpi-sub">Diverted to secure staging</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-lbl">Compliance Success Rate</div>
+        <div class="kpi-val" style="color: #10b981;">99.2%</div>
+        <div class="kpi-sub">Statutory SLA satisfied</div>
+      </div>
+      <div class="kpi-card" style="border: 2px solid #059669; background: linear-gradient(180deg, rgba(5, 150, 105, 0.06) 0%, var(--card-bg) 100%);">
+        <div class="kpi-lbl" style="color: #059669; font-weight: 800;">Financial Risk Avoided</div>
+        <div class="kpi-val" style="color: #059669; font-weight: 900;">$3.42M</div>
+        <div class="kpi-sub" style="color: #059669; font-weight: 600;">Statutory regulatory fines avoided</div>
+      </div>
+    </div>
+
+    <!-- RISK TREND ANALYTICS & COMPLIANCE ROI SPLIT -->
+    <div class="grid-2">
+      <!-- Left: Interactive Risk Trend Analytics -->
+      <div class="card" style="margin-bottom: 0;">
+        <div class="card-title">
+          <span>Enterprise Risk Trend Analytics</span>
+          <div class="time-filter-strip" style="display: flex; gap: 6px;">
+            <button class="header-btn" onclick="setTimeWindow('30d')" id="btn-30d" style="background: var(--purple-bg); border-color: var(--accent); color: var(--accent);">30 Day</button>
+            <button class="header-btn" onclick="setTimeWindow('90d')" id="btn-90d">90 Day</button>
+            <button class="header-btn" onclick="setTimeWindow('12m')" id="btn-12m">12 Month</button>
+          </div>
+        </div>
+        <div class="card-subtitle">
+          Weekly aggregate of prevented PII leaks, deployment blocks, and autonomous policy compilations.
+        </div>
+
+        <!-- Dynamic SVG Chart -->
+        <div style="background: var(--section-box-bg); border-radius: 12px; padding: 18px; margin-bottom: 12px;">
+          <svg viewBox="0 0 540 180" style="width: 100%; height: 180px;">
+            <!-- Grid lines -->
+            <line x1="40" y1="30" x2="520" y2="30" stroke="var(--card-border)" stroke-dasharray="4 4"/>
+            <line x1="40" y1="80" x2="520" y2="80" stroke="var(--card-border)" stroke-dasharray="4 4"/>
+            <line x1="40" y1="130" x2="520" y2="130" stroke="var(--card-border)" stroke-dasharray="4 4"/>
+            <line x1="40" y1="160" x2="520" y2="160" stroke="var(--card-border)"/>
+
+            <!-- Y Axis labels -->
+            <text x="15" y="34" fill="var(--text-muted)" font-size="10" font-family="sans-serif">60</text>
+            <text x="15" y="84" fill="var(--text-muted)" font-size="10" font-family="sans-serif">30</text>
+            <text x="15" y="134" fill="var(--text-muted)" font-size="10" font-family="sans-serif">10</text>
+            <text x="15" y="164" fill="var(--text-muted)" font-size="10" font-family="sans-serif">0</text>
+
+            <!-- Trend Area & Line (Violations Prevented) -->
+            <path id="trendArea" d="M 50 140 Q 120 120 180 90 T 320 60 T 420 40 T 510 32 L 510 160 L 50 160 Z" fill="rgba(79, 70, 229, 0.12)" />
+            <path id="trendLine" d="M 50 140 Q 120 120 180 90 T 320 60 T 420 40 T 510 32" fill="none" stroke="#4f46e5" stroke-width="3" stroke-linecap="round"/>
+
+            <!-- Quarantines Line -->
+            <path id="quarantineLine" d="M 50 150 Q 120 140 180 120 T 320 110 T 420 85 T 510 75" fill="none" stroke="#ef4444" stroke-width="2" stroke-dasharray="5 3"/>
+
+            <!-- Datapoints -->
+            <circle cx="50" cy="140" r="4" fill="#4f46e5"/>
+            <circle cx="180" cy="90" r="4" fill="#4f46e5"/>
+            <circle cx="320" cy="60" r="4" fill="#4f46e5"/>
+            <circle cx="420" cy="40" r="4" fill="#4f46e5"/>
+            <circle cx="510" cy="32" r="5" fill="#4f46e5" stroke="#ffffff" stroke-width="2"/>
+
+            <!-- X Labels -->
+            <text x="45" y="176" fill="var(--text-muted)" font-size="10" font-family="sans-serif" id="lbl-t1">Wk 1</text>
+            <text x="170" y="176" fill="var(--text-muted)" font-size="10" font-family="sans-serif" id="lbl-t2">Wk 2</text>
+            <text x="310" y="176" fill="var(--text-muted)" font-size="10" font-family="sans-serif" id="lbl-t3">Wk 3</text>
+            <text x="410" y="176" fill="var(--text-muted)" font-size="10" font-family="sans-serif" id="lbl-t4">Wk 4</text>
+            <text x="495" y="176" fill="var(--text-muted)" font-size="10" font-family="sans-serif" id="lbl-t5">Current</text>
+          </svg>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; font-size: 0.72rem; color: var(--text-muted);">
+          <span>🟣 <strong>Solid Purple:</strong> Violations Intercepted & Resolved</span>
+          <span>🔴 <strong>Dashed Red:</strong> Quarantines Diverted to Vault</span>
+          <span>📉 <strong>Incident Rate:</strong> Down 42% QoQ</span>
+        </div>
+      </div>
+
+      <!-- Right: Compliance ROI & Autonomous Offload Value -->
+      <div class="card" style="margin-bottom: 0;">
+        <div class="card-title">
+          <span>Compliance ROI & Token Economics</span>
+          <span class="badge badge-green">93.4% SAVINGS</span>
+        </div>
+        <div class="card-subtitle">
+          Demonstrates how Tier 4 deterministic 0-token scanner offloads 93%+ of reasoning calls from expensive cloud LLMs.
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 14px;">
+          <div style="background: var(--section-box-bg); padding: 14px; border-radius: 12px;">
+            <div style="display: flex; justify-content: space-between; font-size: 0.75rem; font-weight: 700; margin-bottom: 4px;">
+              <span>Tier 4 Deterministic Enforcement Engine Checks</span>
+              <span style="color: #4f46e5;">18,932</span>
+            </div>
+            <div style="font-size: 0.7rem; color: var(--text-muted);">Mathematical Luhn Mod 10, AST Schema Differ, and zero-token invariant regex.</div>
+          </div>
+
+          <div style="background: var(--section-box-bg); padding: 14px; border-radius: 12px;">
+            <div style="display: flex; justify-content: space-between; font-size: 0.75rem; font-weight: 700; margin-bottom: 4px;">
+              <span>Estimated Cloud LLM Cost Avoided</span>
+              <span style="color: #059669;">$47,810 / yr</span>
+            </div>
+            <div style="font-size: 0.7rem; color: var(--text-muted);">Offloaded 42.6M prompt & completion tokens via local edge execution.</div>
+          </div>
+
+          <div style="background: var(--section-box-bg); padding: 14px; border-radius: 12px;">
+            <div style="display: flex; justify-content: space-between; font-size: 0.75rem; font-weight: 700; margin-bottom: 4px;">
+              <span>Statutory Sanctions Prevented</span>
+              <span style="color: #dc2626;">$3,420,000</span>
+            </div>
+            <div style="font-size: 0.7rem; color: var(--text-muted);">Zero PCI-DSS monthly audit surcharges and GDPR Article 32 statutory notices.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STATUTORY REGULATORY EXPOSURE PANEL -->
+    <div class="card" style="margin-top: 24px;">
+      <div class="card-title">
+        <span>Statutory Regulatory Framework Exposure</span>
+        <span class="badge badge-purple">4 GLOBAL STANDARDS ENFORCED</span>
+      </div>
+      <div class="card-subtitle">
+        Automated mapping of PII and contract invariants to regulatory statutory requirements.
+      </div>
+
+      <div class="reg-grid">
+        <div class="reg-card" style="border-top: 3px solid #3b82f6;">
+          <div class="reg-header">
+            <span class="reg-title">🇪🇺 GDPR</span>
+            <span class="badge badge-red">EXPOSURE: 78</span>
+          </div>
+          <div style="font-size: 0.73rem; color: var(--text-muted);">Article 32 & 83 (Cleartext PII Security of Processing)</div>
+          <div style="display: flex; justify-content: space-between; font-size: 0.75rem; border-top: 1px solid var(--card-border); padding-top: 8px;">
+            <span>Open Issues: <strong style="color: #dc2626;">3</strong></span>
+            <span>Resolved: <strong style="color: #059669;">48</strong></span>
+          </div>
+          <div style="font-size: 0.68rem; color: var(--text-subtle);">Statutory Fine: Up to €20M or 4% Global Turnover</div>
+        </div>
+
+        <div class="reg-card" style="border-top: 3px solid #10b981;">
+          <div class="reg-header">
+            <span class="reg-title">🏥 HIPAA</span>
+            <span class="badge badge-red">EXPOSURE: 92</span>
+          </div>
+          <div style="font-size: 0.73rem; color: var(--text-muted);">45 CFR § 164.514 (Safe Harbor PHI De-Identification)</div>
+          <div style="display: flex; justify-content: space-between; font-size: 0.75rem; border-top: 1px solid var(--card-border); padding-top: 8px;">
+            <span>Open Issues: <strong style="color: #dc2626;">1</strong></span>
+            <span>Resolved: <strong style="color: #059669;">26</strong></span>
+          </div>
+          <div style="font-size: 0.68rem; color: var(--text-subtle);">Statutory Fine: $1.9M Annual Ceiling</div>
+        </div>
+
+        <div class="reg-card" style="border-top: 3px solid #f59e0b;">
+          <div class="reg-header">
+            <span class="reg-title">💳 PCI-DSS</span>
+            <span class="badge badge-amber">EXPOSURE: 45</span>
+          </div>
+          <div style="font-size: 0.73rem; color: var(--text-muted);">Req 3.4 & 4.2 (Render PAN Unreadable Everywhere)</div>
+          <div style="display: flex; justify-content: space-between; font-size: 0.75rem; border-top: 1px solid var(--card-border); padding-top: 8px;">
+            <span>Open Issues: <strong style="color: #f59e0b;">2</strong></span>
+            <span>Resolved: <strong style="color: #059669;">64</strong></span>
+          </div>
+          <div style="font-size: 0.68rem; color: var(--text-subtle);">Statutory Fine: $100k / Month Non-Compliance</div>
+        </div>
+
+        <div class="reg-card" style="border-top: 3px solid #8b5cf6;">
+          <div class="reg-header">
+            <span class="reg-title">🏦 GLBA</span>
+            <span class="badge badge-green">EXPOSURE: 24</span>
+          </div>
+          <div style="font-size: 0.73rem; color: var(--text-muted);">15 U.S.C. § 6801(b) (Financial Safeguards Rule)</div>
+          <div style="display: flex; justify-content: space-between; font-size: 0.75rem; border-top: 1px solid var(--card-border); padding-top: 8px;">
+            <span>Open Issues: <strong style="color: #059669;">0</strong></span>
+            <span>Resolved: <strong style="color: #059669;">31</strong></span>
+          </div>
+          <div style="font-size: 0.68rem; color: var(--text-subtle);">Statutory Fine: Mandatory Bank Audit & Oversight</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BUSINESS DOMAIN HEATMAP & TOP REPEAT OFFENDERS SPLIT -->
+    <div class="grid-2">
+      <!-- Left: Domain Heatmap -->
+      <div class="card" style="margin-bottom: 0;">
+        <div class="card-title">
+          <span>Enterprise Risk Domain Heatmap</span>
+          <span class="badge badge-purple">5 BUSINESS DOMAINS</span>
+        </div>
+        <div class="card-subtitle">
+          Distribution of governance incidents across enterprise operational divisions.
+        </div>
+
+        <table class="heatmap-table">
+          <thead>
+            <tr>
+              <th style="text-align: left;">Business Domain</th>
+              <th>Low</th>
+              <th>Medium</th>
+              <th>High</th>
+              <th>Critical</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="text-align: left;"><strong>Marketing</strong></td>
+              <td><div class="heat-cell-low">48</div></td>
+              <td><div class="heat-cell-med">24</div></td>
+              <td><div class="heat-cell-high">7</div></td>
+              <td><div class="heat-cell-crit">2</div></td>
+            </tr>
+            <tr>
+              <td style="text-align: left;"><strong>Sales</strong></td>
+              <td><div class="heat-cell-low">62</div></td>
+              <td><div class="heat-cell-med">18</div></td>
+              <td><div class="heat-cell-high">3</div></td>
+              <td><div style="color: var(--text-muted);">0</div></td>
+            </tr>
+            <tr>
+              <td style="text-align: left;"><strong>Finance</strong></td>
+              <td><div class="heat-cell-low">88</div></td>
+              <td><div class="heat-cell-med">32</div></td>
+              <td><div class="heat-cell-high">14</div></td>
+              <td><div class="heat-cell-crit">8</div></td>
+            </tr>
+            <tr>
+              <td style="text-align: left;"><strong>Operations</strong></td>
+              <td><div class="heat-cell-low">74</div></td>
+              <td><div class="heat-cell-med">12</div></td>
+              <td><div class="heat-cell-high">2</div></td>
+              <td><div class="heat-cell-crit">1</div></td>
+            </tr>
+            <tr>
+              <td style="text-align: left;"><strong>Customer 360</strong></td>
+              <td><div class="heat-cell-low">95</div></td>
+              <td><div class="heat-cell-med">41</div></td>
+              <td><div class="heat-cell-high">19</div></td>
+              <td><div class="heat-cell-crit">9</div></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Right: Top Repeat Offenders Table -->
+      <div class="card" style="margin-bottom: 0;">
+        <div class="card-title">
+          <span>Top Repeat Offender Datasets</span>
+          <span class="badge badge-red">3+ INCIDENTS</span>
+        </div>
+        <div class="card-subtitle">
+          Entities with recurring invariant violations requiring Human-in-the-Loop approval.
+        </div>
+
+        <div class="table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Dataset</th>
+                <th>Violations</th>
+                <th>Trend</th>
+                <th>Owner</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>customer_master</strong></td>
+                <td><strong style="color: #dc2626;">6</strong></td>
+                <td><span class="badge badge-red">Deteriorating</span></td>
+                <td>Finance Core</td>
+                <td><span class="badge badge-red">LOCKED</span></td>
+              </tr>
+              <tr>
+                <td><strong>lead_events</strong></td>
+                <td><strong style="color: #dc2626;">3</strong></td>
+                <td><span class="badge badge-amber">Watchlist</span></td>
+                <td>Growth Data</td>
+                <td><span class="badge badge-amber">ESCALATED</span></td>
+              </tr>
+              <tr>
+                <td><strong>transactions_live</strong></td>
+                <td><strong style="color: #f59e0b;">2</strong></td>
+                <td><span class="badge badge-green">Improving</span></td>
+                <td>Payments Core</td>
+                <td><span class="badge badge-green">MONITORED</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BOARD-READY EXECUTIVE BRIEF MODAL -->
+  <div class="modal-overlay" id="execModal">
+    <div class="modal-content" id="printableBrief">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2px solid var(--accent); padding-bottom: 16px; margin-bottom: 20px;">
+        <div>
+          <div style="font-size: 0.72rem; text-transform: uppercase; font-weight: 800; letter-spacing: 0.08em; color: var(--accent);">BOARDROOM EXECUTIVE BRIEF • SYSTEM OF RECORD</div>
+          <h2 style="font-size: 1.4rem; font-weight: 800; margin-top: 2px;">Enterprise Data Governance Executive Report</h2>
+          <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 4px;">Approved by Autonomous Digital Governance Officer • Tier 0 Evidence Vault Record</p>
+        </div>
+        <button onclick="closeExecutiveReport()" class="no-print" style="background: none; border: none; font-size: 1.2rem; cursor: pointer; color: var(--text-muted);">✕</button>
+      </div>
+
+      <!-- AUDIT CERTIFICATE STRIP -->
+      <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 20px; background: var(--section-box-bg); padding: 14px; border-radius: 12px; border: 1px solid var(--card-border);">
+        <div>
+          <div style="font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700;">Certificate ID</div>
+          <div style="font-size: 0.8rem; font-weight: 800; font-family: monospace; color: var(--accent);">CERT-2026-000014</div>
+        </div>
+        <div>
+          <div style="font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700;">Generated Timestamp</div>
+          <div style="font-size: 0.75rem; font-weight: 700;" id="reportTimestamp">2026-10-30T18:00:00Z</div>
+        </div>
+        <div>
+          <div style="font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700;">Governance Health</div>
+          <div style="font-size: 0.8rem; font-weight: 800; color: #059669;">94 / 100 (EXCELLENT)</div>
+        </div>
+        <div>
+          <div style="font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700;">Cryptographic SHA-256</div>
+          <div style="font-size: 0.68rem; font-family: monospace; color: #4f46e5; word-break: break-all;" title="d8a39b0f7c2e46b9a8123cf8731e405e3479b19d45e687b32876f23340b1ca82">d8a39b0f7c2e...ca82</div>
+        </div>
+      </div>
+
+      <!-- 1. EXECUTIVE SUMMARY -->
+      <div style="margin-bottom: 18px;">
+        <h4 style="font-size: 0.88rem; font-weight: 800; margin-bottom: 6px; color: var(--text); border-bottom: 1px solid var(--card-border); padding-bottom: 4px;">1. Executive Summary</h4>
+        <p style="font-size: 0.78rem; color: var(--text); line-height: 1.55;">
+          The Autonomous Enterprise Data Governance Agent has governed <strong>2,184 lakehouse, warehouse, and streaming datasets</strong>, successfully sustaining a <strong>99.2% statutory compliance rate</strong>. Across the reporting period, the five-tier cognitive engine prevented <strong>143 direct PII breaches</strong> and blocked <strong>37 breaking contract schema mutations</strong> before ingestion, entirely safeguarding downstream ML feature stores, reporting pipelines, and customer-facing APIs.
+        </p>
+      </div>
+
+      <!-- 2. GOVERNANCE HEALTH SCORE & STATUTORY POSTURE -->
+      <div style="margin-bottom: 18px;">
+        <h4 style="font-size: 0.88rem; font-weight: 800; margin-bottom: 6px; color: var(--text); border-bottom: 1px solid var(--card-border); padding-bottom: 4px;">2. Governance Health Score & Invariant Posture</h4>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; font-size: 0.78rem;">
+          <div style="background: var(--section-box-bg); padding: 12px; border-radius: 8px;">
+            <div style="font-weight: 700; color: #059669; margin-bottom: 4px;">Score: 94/100 (State: Excellent)</div>
+            <div style="color: var(--text-muted); line-height: 1.4;">Zero critical regulatory lapses in production. Mean policy evaluation latency: <strong>1.4ms</strong> via Tier 4 zero-token deterministic scanner.</div>
+          </div>
+          <div style="background: var(--section-box-bg); padding: 12px; border-radius: 8px;">
+            <div style="font-weight: 700; color: var(--accent); margin-bottom: 4px;">Invariants Enforced (G-1 through G-5)</div>
+            <div style="color: var(--text-muted); line-height: 1.4;">100% invariant compliance. G-1 (Zero unmasked PII) and G-2 (Data contract immutability) strictly enforced at CI/CD merge boundaries.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. RISK OVERVIEW & REGULATORY EXPOSURE -->
+      <div style="margin-bottom: 18px;">
+        <h4 style="font-size: 0.88rem; font-weight: 800; margin-bottom: 6px; color: var(--text); border-bottom: 1px solid var(--card-border); padding-bottom: 4px;">3. Risk Overview & Regulatory Exposure</h4>
+        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; font-size: 0.75rem; text-align: center;">
+          <div style="background: var(--section-box-bg); padding: 10px; border-radius: 8px;">
+            <div style="font-weight: 800; color: #4f46e5;">GDPR (Art 32)</div>
+            <div style="font-size: 1rem; font-weight: 800; margin: 4px 0;">42% Exposure</div>
+            <div style="color: var(--text-muted); font-size: 0.68rem;">61 Prevented Violations</div>
+          </div>
+          <div style="background: var(--section-box-bg); padding: 10px; border-radius: 8px;">
+            <div style="font-weight: 800; color: #059669;">HIPAA (164.514)</div>
+            <div style="font-size: 1rem; font-weight: 800; margin: 4px 0;">28% Exposure</div>
+            <div style="color: var(--text-muted); font-size: 0.68rem;">40 Prevented Violations</div>
+          </div>
+          <div style="background: var(--section-box-bg); padding: 10px; border-radius: 8px;">
+            <div style="font-weight: 800; color: #d97706;">PCI-DSS (Req 3.4)</div>
+            <div style="font-size: 1rem; font-weight: 800; margin: 4px 0;">18% Exposure</div>
+            <div style="color: var(--text-muted); font-size: 0.68rem;">26 Prevented Violations</div>
+          </div>
+          <div style="background: var(--section-box-bg); padding: 10px; border-radius: 8px;">
+            <div style="font-weight: 800; color: #7c3aed;">GLBA (Safeguards)</div>
+            <div style="font-size: 1rem; font-weight: 800; margin: 4px 0;">12% Exposure</div>
+            <div style="color: var(--text-muted); font-size: 0.68rem;">16 Prevented Violations</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. REPEAT OFFENDERS & INCIDENTS -->
+      <div style="margin-bottom: 18px;">
+        <h4 style="font-size: 0.88rem; font-weight: 800; margin-bottom: 6px; color: var(--text); border-bottom: 1px solid var(--card-border); padding-bottom: 4px;">4. High-Risk Datasets & Repeat Offenders</h4>
+        <table style="width: 100%; border-collapse: collapse; font-size: 0.75rem; text-align: left;">
+          <thead>
+            <tr style="background: var(--section-box-bg); color: var(--text-muted);">
+              <th style="padding: 6px 10px;">Dataset URN</th>
+              <th style="padding: 6px 10px;">Risk Score</th>
+              <th style="padding: 6px 10px;">Trend</th>
+              <th style="padding: 6px 10px;">Violations</th>
+              <th style="padding: 6px 10px;">Enforcement Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom: 1px solid var(--card-border);">
+              <td style="padding: 6px 10px;"><strong>customer_master</strong></td>
+              <td style="padding: 6px 10px; color: #dc2626; font-weight: 700;">87 (Critical)</td>
+              <td style="padding: 6px 10px;"><span style="color: #dc2626; font-weight: 700;">DETERIORATING</span></td>
+              <td style="padding: 6px 10px;">6 Repeat Offenses</td>
+              <td style="padding: 6px 10px;"><span class="badge badge-red">QUARANTINE + HITL</span></td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--card-border);">
+              <td style="padding: 6px 10px;"><strong>lead_events</strong></td>
+              <td style="padding: 6px 10px; color: #d97706; font-weight: 700;">64 (High)</td>
+              <td style="padding: 6px 10px;"><span style="color: #d97706; font-weight: 700;">WATCHLIST</span></td>
+              <td style="padding: 6px 10px;">3 Offenses</td>
+              <td style="padding: 6px 10px;"><span class="badge badge-amber">ESCALATED JIRA</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 5. FINANCIAL IMPACT & AVOIDED FINES -->
+      <div style="margin-bottom: 18px;">
+        <h4 style="font-size: 0.88rem; font-weight: 800; margin-bottom: 6px; color: var(--text); border-bottom: 1px solid var(--card-border); padding-bottom: 4px;">5. Financial Risk Avoidance & Cost Efficiency</h4>
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; font-size: 0.75rem;">
+          <div style="background: var(--section-box-bg); padding: 10px; border-radius: 8px;">
+            <div style="color: var(--text-muted); font-size: 0.68rem;">Statutory Exposure Avoided</div>
+            <div style="font-size: 1.1rem; font-weight: 800; color: #059669; margin-top: 2px;">$3.42M</div>
+            <div style="color: var(--text-muted); font-size: 0.65rem;">Max statutory risk under GDPR & PCI-DSS</div>
+          </div>
+          <div style="background: var(--section-box-bg); padding: 10px; border-radius: 8px;">
+            <div style="color: var(--text-muted); font-size: 0.68rem;">LLM Token Cost Avoided</div>
+            <div style="font-size: 1.1rem; font-weight: 800; color: #4f46e5; margin-top: 2px;">$47,850</div>
+            <div style="color: var(--text-muted); font-size: 0.65rem;">93.4% filtered via zero-token Tier 4 AST</div>
+          </div>
+          <div style="background: var(--section-box-bg); padding: 10px; border-radius: 8px;">
+            <div style="color: var(--text-muted); font-size: 0.68rem;">Outage & Breakage Avoided</div>
+            <div style="font-size: 1.1rem; font-weight: 800; color: #7c3aed; margin-top: 2px;">$1.20M</div>
+            <div style="color: var(--text-muted); font-size: 0.65rem;">37 breaking contract mutations blocked</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6. RECOMMENDATIONS -->
+      <div style="margin-bottom: 18px;">
+        <h4 style="font-size: 0.88rem; font-weight: 800; margin-bottom: 6px; color: var(--text); border-bottom: 1px solid var(--card-border); padding-bottom: 4px;">6. Strategic Governance Recommendations</h4>
+        <ul style="font-size: 0.78rem; color: var(--text); padding-left: 20px; line-height: 1.55;">
+          <li><strong>Mandate Ingestion Tokenization:</strong> Enforce automated dbt/PySpark column hashing on <code>customer_master</code> to remediate repeat offender risk.</li>
+          <li><strong>CI/CD Gate Expansion:</strong> Mandate pre-merge exit code gating across all 14 growth analytics and marketing repos.</li>
+          <li><strong>HITL Incident Dispatch:</strong> Activate Invariant G-4 automated ServiceNow dispatch for datasets with 2+ unmasked PII violations.</li>
+          <li><strong>Edge Scanning Offload:</strong> Maintain Tier 4 deterministic scanner to sustain 93.4% LLM token cost reduction.</li>
+        </ul>
+      </div>
+
+      <!-- ACTION BUTTONS -->
+      <div class="no-print" style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 24px; border-top: 1px solid var(--card-border); padding-top: 16px;">
+        <button class="header-btn" onclick="closeExecutiveReport()">Close</button>
+        <button class="btn" style="background: #4f46e5; color: white;" onclick="window.print()">🖨️ Print / Save to PDF</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    const STORAGE_KEY_THEME = 'edga_theme';
+
+    function init() {
+      const savedTheme = localStorage.getItem(STORAGE_KEY_THEME) || 'light';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+      document.getElementById('themeBtn').textContent = savedTheme === 'light' ? '☀️ Light Theme' : '🌙 Dark Theme';
+      document.getElementById('reportTimestamp').textContent = new Date().toISOString();
+    }
+
+    window.setTimeWindow = function(windowId) {
+      document.querySelectorAll('.time-filter-strip button').forEach(b => {
+        b.style.background = 'var(--card-bg)';
+        b.style.borderColor = 'var(--card-border)';
+        b.style.color = 'var(--text)';
+      });
+      const activeBtn = document.getElementById(`btn-${windowId}`);
+      if (activeBtn) {
+        activeBtn.style.background = 'var(--purple-bg)';
+        activeBtn.style.borderColor = 'var(--accent)';
+        activeBtn.style.color = 'var(--accent)';
+      }
+
+      const area = document.getElementById('trendArea');
+      const line = document.getElementById('trendLine');
+      if (windowId === '30d') {
+        area.setAttribute('d', 'M 50 140 Q 120 120 180 90 T 320 60 T 420 40 T 510 32 L 510 160 L 50 160 Z');
+        line.setAttribute('d', 'M 50 140 Q 120 120 180 90 T 320 60 T 420 40 T 510 32');
+      } else if (windowId === '90d') {
+        area.setAttribute('d', 'M 50 150 Q 120 130 180 110 T 320 80 T 420 55 T 510 25 L 510 160 L 50 160 Z');
+        line.setAttribute('d', 'M 50 150 Q 120 130 180 110 T 320 80 T 420 55 T 510 25');
+      } else {
+        area.setAttribute('d', 'M 50 160 Q 120 150 180 130 T 320 100 T 420 70 T 510 20 L 510 160 L 50 160 Z');
+        line.setAttribute('d', 'M 50 160 Q 120 150 180 130 T 320 100 T 420 70 T 510 20');
+      }
+    };
+
+    window.openExecutiveReport = function() {
+      document.getElementById('execModal').style.display = 'flex';
+    };
+    window.closeExecutiveReport = function() {
+      document.getElementById('execModal').style.display = 'none';
+    };
+
+    window.toggleTheme = function() {
+      const cur = document.documentElement.getAttribute('data-theme') || 'light';
+      const next = cur === 'light' ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem(STORAGE_KEY_THEME, next);
+      document.getElementById('themeBtn').textContent = next === 'light' ? '☀️ Light Theme' : '🌙 Dark Theme';
+    };
+
+    init();
+  </script>
+</body>
+</html>
