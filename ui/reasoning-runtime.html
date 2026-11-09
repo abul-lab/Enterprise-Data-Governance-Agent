@@ -1223,7 +1223,6 @@
       if (currentSelectedProvider === 'gemini') {
         const key = document.getElementById('geminiApiKey').value.trim();
         const model = document.getElementById('geminiModel').value;
-        if (key) localStorage.setItem(STORAGE_KEY_GEMINI, key);
         localStorage.setItem(STORAGE_KEY_GEMINI_MODEL, model);
       } else if (currentSelectedProvider === 'ollama') {
         const url = document.getElementById('ollamaUrl').value.trim();
@@ -1235,7 +1234,6 @@
         const key = document.getElementById('customKey').value.trim();
         const model = document.getElementById('customModel').value.trim();
         localStorage.setItem(STORAGE_KEY_CUSTOM_URL, url);
-        if (key) localStorage.setItem(STORAGE_KEY_CUSTOM_KEY, key);
         localStorage.setItem(STORAGE_KEY_CUSTOM_MODEL, model);
       }
 
@@ -1277,7 +1275,7 @@
         }
 
         if (currentSelectedProvider === 'gemini') {
-          const key = document.getElementById('geminiApiKey').value.trim() || localStorage.getItem(STORAGE_KEY_GEMINI);
+          const key = document.getElementById('geminiApiKey').value.trim();
           const model = document.getElementById('geminiModel').value;
           if (!key) {
             displayValidationFailure('Gemini API Key is missing. Please enter your Google AI Studio key.');
@@ -1315,7 +1313,7 @@
 
         if (currentSelectedProvider === 'custom') {
           const url = (document.getElementById('customUrl').value.trim() || 'https://api.openai.com/v1').replace(/\/+$/, '');
-          const key = document.getElementById('customKey').value.trim() || localStorage.getItem(STORAGE_KEY_CUSTOM_KEY);
+          const key = document.getElementById('customKey').value.trim();
           const model = document.getElementById('customModel').value.trim() || 'gpt-4o';
           const latency = Math.round(performance.now() - startTime);
           displayValidationSuccess('OpenAI Compatible', model, latency + 120, 24, 18);
@@ -1386,12 +1384,15 @@
       const prov = localStorage.getItem(STORAGE_KEY_PROVIDER) || 'gemini';
       selectProvider(prov);
 
-      const geminiKey = localStorage.getItem(STORAGE_KEY_GEMINI) || '';
+      // API keys are never restored from storage. Earlier versions saved them; remove those copies.
+      localStorage.removeItem(STORAGE_KEY_GEMINI);
+      localStorage.removeItem(STORAGE_KEY_CUSTOM_KEY);
+      const geminiKey = '';
       const geminiModel = localStorage.getItem(STORAGE_KEY_GEMINI_MODEL) || 'gemini-2.5-flash';
       const ollamaUrl = localStorage.getItem(STORAGE_KEY_OLLAMA_URL) || 'http://localhost:11434';
       const ollamaModel = localStorage.getItem(STORAGE_KEY_OLLAMA_MODEL) || 'llama3:latest';
       const customUrl = localStorage.getItem(STORAGE_KEY_CUSTOM_URL) || 'https://api.openai.com/v1';
-      const customKey = localStorage.getItem(STORAGE_KEY_CUSTOM_KEY) || '';
+      const customKey = '';
       const customModel = localStorage.getItem(STORAGE_KEY_CUSTOM_MODEL) || 'gpt-4o';
 
       document.getElementById('geminiApiKey').value = geminiKey;
