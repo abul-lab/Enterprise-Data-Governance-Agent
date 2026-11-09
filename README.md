@@ -127,7 +127,7 @@ The agent is **100% self-contained** and runs out-of-the-box with authentic pre-
 
 ### 1. Installation
 ```bash
-git clone https://github.com/abulslab/Enterprise-Data-Governance-Agent.git
+git clone https://github.com/abul-lab/Enterprise-Data-Governance-Agent.git
 cd Enterprise-Data-Governance-Agent
 npm install
 ```
@@ -335,5 +335,5 @@ data-governance · data-contracts · compliance · data-privacy · gdpr · hipaa
 ---
 
 ## 📄 License
-MIT © [abulslab](https://github.com/abulslab)
+MIT © [abul-lab](https://github.com/abul-lab)
 
