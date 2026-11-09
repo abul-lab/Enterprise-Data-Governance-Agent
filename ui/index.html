@@ -1210,6 +1210,11 @@ Select an enterprise incident platform above to view the synthesized escalation 
   <div class="toast" id="toast"></div>
 
   <script type="module">
+      // Escapes text before it is placed into innerHTML. Model and data values must go through this.
+      function escapeHtml(value) {
+        return String(value ?? '').replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
+      }
+
     // Bundled Scenarios
     const PRESETS = {
       critical_pii: {
@@ -2195,9 +2200,9 @@ FROM raw_staging_stream;`;
         blastBox.style.display = 'block';
         document.getElementById('blastRiskBadge').textContent = 'CRITICAL BLAST RADIUS';
         document.getElementById('blastRadiusSummary').innerHTML = `
-          Breaking contract mutation breaks <strong>${baseline.registeredConsumers.length} active consumer systems</strong>:
+          Breaking contract mutation breaks <strong>${escapeHtml(baseline.registeredConsumers.length)} active consumer systems</strong>:
           <ul style="margin-top: 6px; padding-left: 18px;">
-            ${baseline.registeredConsumers.map(c => `<li><strong>${c.serviceName}</strong> (${c.consumerType}, ${c.slaTier})</li>`).join('')}
+            ${baseline.registeredConsumers.map(c => `<li><strong>${escapeHtml(c.serviceName)}</strong> (${escapeHtml(c.consumerType)}, ${escapeHtml(c.slaTier)})</li>`).join('')}
           </ul>
         `;
       }
@@ -2225,11 +2230,11 @@ FROM raw_staging_stream;`;
         item.className = 'step-item';
         item.innerHTML = `
           <div class="step-header">
-            <span style="color: #4f46e5; font-weight: 800;">STEP ${t.step} · ${t.phase}</span>
-            <span class="badge ${prov === 'gemini' ? 'badge-purple' : 'badge-amber'}">${providerLabel.toUpperCase()}</span>
+            <span style="color: #4f46e5; font-weight: 800;">STEP ${escapeHtml(t.step)} · ${escapeHtml(t.phase)}</span>
+            <span class="badge ${prov === 'gemini' ? 'badge-purple' : 'badge-amber'}">${escapeHtml(providerLabel.toUpperCase())}</span>
           </div>
-          <div class="step-body">${t.observation}</div>
-          <div class="step-decision"><strong>DECISION:</strong> ${t.decision}</div>
+          <div class="step-body">${escapeHtml(t.observation)}</div>
+          <div class="step-decision"><strong>DECISION:</strong> ${escapeHtml(t.decision)}</div>
         `;
         stepList.appendChild(item);
       }
